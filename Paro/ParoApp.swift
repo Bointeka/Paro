@@ -9,11 +9,12 @@ import SwiftUI
 
 @main
 struct ParoApp: App {
+    
     let persistenceController = PersistenceController.shared
-
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MenuView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
