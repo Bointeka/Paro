@@ -17,7 +17,7 @@ struct NoteEdit: View {
                 VStack (alignment: .leading){
                     
                     TextField("Title", text: $note.title)
-                        .frame(width: .infinity, height: 50)
+                        .frame(width: UIScreen.main.bounds.width - 50, height: 50)
                         .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
                         .overlay(RoundedRectangle(cornerRadius: 10).stroke())
                         .padding(EdgeInsets(top: 5, leading: 10, bottom: 10, trailing: 10))

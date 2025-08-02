@@ -12,8 +12,7 @@ struct MenuView: View {
     @Environment(\.colorScheme) var colorScheme
     @State var text: String = "testing"
     @State var isVisible: Bool = false
-    
-    
+    @State var folderModel: FolderModel = FolderModel(folders: [])
     var body: some View {
         NavigationStack {
             HStack {
@@ -25,7 +24,7 @@ struct MenuView: View {
             Spacer()
             HStack {
                 Button {
-                    print("test")
+                    isVisible = true
                 } label: {
                     Icon(iconName: "folder.fill.badge.plus", width: 50, height: 50)
                         
@@ -35,6 +34,8 @@ struct MenuView: View {
                     Icon(iconName:"square.and.pencil", width: 40, height: 40)
                 }.padding(.trailing, 30)
             }
+        }.sheet(isPresented: $isVisible) {
+            AddFolder(isPresented: $isVisible, folderModel: $folderModel)
         }
     }
 }

@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct Note {
+struct Note: Equatable {
     var title: String
     var text: String
     var timestamp: Date
