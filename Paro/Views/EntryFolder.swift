@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct EntryFolder: View {
-    @State var folder: Folder
+    @State var folder: Folder?
     var body: some View {
-        HStack {
-            Text(folder.name)
-            Spacer()
-            Icon(iconName:"chevron.right", width: 20, height: 20)
+        NavigationLink (destination: Workspace(selectedFolder: $folder)) {
+            HStack {
+                Text(folder!.name)
+                Spacer()
+            }
         }
     }
 }

@@ -9,15 +9,23 @@ import SwiftUI
 
 struct Workspace: View {
     @State var isVisible: Bool = false
-    @Binding var selectedFolder: FolderModel
+    @Binding var selectedFolder: Folder?
     var body: some View {
         NavigationStack {
             HStack {
                 Spacer()
                 Icon(iconName: "magnifyingglass", width: 30, height: 30)
                     .padding(.trailing, 30)
+                Button {
+                    print(selectedFolder!.folders)
+                } label: {
+                    Text("Test")
+                }
             }
             Spacer()
+            List(selectedFolder!.folders) { folder in
+                EntryFolder(folder: folder)
+            }
             HStack {
                 Button {
                     isVisible.toggle()
@@ -31,11 +39,11 @@ struct Workspace: View {
                 }.padding(.trailing, 30)
             }
         }.sheet(isPresented: $isVisible) {
-            AddFolder(isPresented: $isVisible, folderModel: $selectedFolder)
+            AddFolder(isPresented: $isVisible, folderModel: .constant(nil), folder: $selectedFolder)
         }
     }
 }
 
 #Preview {
-    Workspace(selectedFolder: .constant(FolderModel(folders: [])))
+    Workspace(selectedFolder: .constant(Folder(name: "test")))
 }

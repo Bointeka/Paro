@@ -10,25 +10,36 @@ import SwiftUI
 struct AddFolder: View {
     @State var showCreateAlert = false
     @Binding var isPresented: Bool
-    @Binding var folderModel: FolderModel
+    @Binding var folderModel: FolderModel?
+    @Binding var folder: Folder?
     @State var folderName: String = ""
     var body: some View {
         GeometryReader {geo in
             VStack {
                 HStack {
                     Button {
-                        isPresented = false
+                        isPresented.toggle()
                     } label: {
                         Text("Cancel")
                     }.padding(.horizontal, geo.size.width * 0.05)
                     Spacer()
                     Button {
-                        do {
-                            try folderModel.addFolder(Folder(name: folderName))
-                            isPresented = false
-                        } catch {
-                            showCreateAlert = true
+                        if (folderModel != nil) {
+                            do {
+                                try folderModel?.addFolder(Folder(name: folderName))
+                                isPresented.toggle()
+                            } catch {
+                                showCreateAlert.toggle()
+                            }
+                        } else {
+                            do {
+                                try folder?.addFolder(Folder(name: folderName))
+                                isPresented.toggle()
+                            } catch {
+                                showCreateAlert.toggle()
+                            }
                         }
+                       
                         
                     } label: {
                         Text("Create")
@@ -51,5 +62,5 @@ struct AddFolder: View {
 }
 
 #Preview {
-    AddFolder(isPresented: .constant(true as Bool), folderModel: .constant(FolderModel(folders:[])))
+    AddFolder(isPresented: .constant(true as Bool), folderModel: .constant(FolderModel(folders:[])), folder: .constant(nil))
 }

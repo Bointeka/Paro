@@ -11,7 +11,7 @@ import CoreData
 struct MenuView: View {
     @Environment(\.colorScheme) var colorScheme
     @State var text: String = "testing"
-    @State var folderModel: FolderModel = FolderModel(folders: [])
+    @State var folderModel: FolderModel? = FolderModel(folders: [])
     @State var isVisible: Bool = false
     
     @State var searchBar: Bool = false;
@@ -19,8 +19,8 @@ struct MenuView: View {
     
     var body: some View {
         NavigationStack {
-            
-            List(folderModel.folders) {folder in
+            //TODO: Use classes instead of structs. We cannot alter structs since they are pass by value
+            List(folderModel!.folders) {folder in
                 EntryFolder(folder: folder)
             }.navigationTitle("Folders")
                 .toolbar(content: {
@@ -40,7 +40,7 @@ struct MenuView: View {
                 Spacer()
             }
         }.sheet(isPresented: $isVisible) {
-            AddFolder(isPresented: $isVisible, folderModel: $folderModel)
+            AddFolder(isPresented: $isVisible, folderModel: $folderModel, folder: .constant(nil))
         }
     }
 }
