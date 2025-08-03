@@ -42,5 +42,5 @@ struct NoteEdit: View {
 }
 
 #Preview {
-    NoteEdit(note: Note(title: "123", text: "Hello World", timestamp: Date()))
+    NoteEdit(note: Note(id: 1))
 }
