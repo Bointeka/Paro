@@ -26,9 +26,13 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             let scenes = UIApplication.shared.connectedScenes
-            let windowScene = scenes.first as? UIWindowScene
-            windowScene?.windows.first?.backgroundColor = .grassGreen
-            windowScene?.windows.first?.overrideUserInterfaceStyle = .dark
+            let windowScenes = scenes.first as? UIWindowScene
+            windowScenes?.windows.forEach { window in
+                window.backgroundColor = .grassGreen
+                window.overrideUserInterfaceStyle = .dark
+                
+            }
+            
         }
         return true;
     }
