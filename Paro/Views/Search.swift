@@ -8,8 +8,21 @@
 import SwiftUI
 
 struct Search: View {
+    @Environment(\.dismiss) var dismiss
+    @State var searchString: String = ""
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            
+        }.navigationBarBackButtonHidden(true)
+            .navigationBarItems(leading:
+                                    TextField("Search",text: $searchString)
+                .frame(width: 300, height: 50)
+                                , trailing:
+                                    Button {
+                dismiss()
+            } label: {
+                Text("Cancel")
+            })
     }
 }
 

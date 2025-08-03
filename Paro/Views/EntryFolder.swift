@@ -19,6 +19,5 @@ struct EntryFolder: View {
 }
 
 #Preview {
-    //EntryFolder(folder: .constant(Folder(name: "test")))
     EntryFolder(folder: Folder(name: "test"))
 }
