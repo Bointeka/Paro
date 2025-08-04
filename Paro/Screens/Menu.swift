@@ -19,7 +19,6 @@ struct MenuView: View {
     
     var body: some View {
         NavigationStack {
-            //TODO: Use classes instead of structs. We cannot alter structs since they are pass by value
             List(folderModel!.folders) {folder in
                 EntryFolder(folder: folder)
             }.navigationTitle("Folders")

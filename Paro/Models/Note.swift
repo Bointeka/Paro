@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct Note: Equatable, Identifiable {
+@Observable class Note: Equatable, Identifiable {
     var id: Int
     var title: String
     var text: String
@@ -25,6 +25,12 @@ struct Note: Equatable, Identifiable {
         self.title = title
         self.text = ""
         self.timestamp = Date.init()
+    }
+    
+    func getTimestamp() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        return dateFormatter.string(from: timestamp)
     }
     
     static func == (lhs: Note, rhs: Note) -> Bool {
