@@ -8,16 +8,20 @@
 import SwiftUI
 
 struct EntryNote: View {
-    @Binding var note: Note
+    @State var note: Note
     var body: some View {
-        HStack{
-            Text(note.title)
+        NavigationLink(destination: NoteEdit(folder: .constant(nil), note: note)) {
+            VStack {
+                Text(note.title)
+                Text(note.getTimestamp())
+                    .font(.footnote)
+            }
+            
             Spacer()
-            Icon(iconName: "chevron.right", width: 20, height: 20)
         }
     }
 }
 
 #Preview {
-    EntryNote(note: .constant(Note(id: 1, title: "Yes")))
+    EntryNote(note: Note(id: 1, title: "Yes"))
 }

@@ -12,20 +12,26 @@ struct Workspace: View {
     @Binding var selectedFolder: Folder?
     var body: some View {
         NavigationStack {
-            HStack {
-                Spacer()
-                Icon(iconName: "magnifyingglass", width: 30, height: 30)
-                    .padding(.trailing, 30)
-                Button {
-                    print(selectedFolder!.folders)
-                } label: {
-                    Text("Test")
-                }
-            }
             Spacer()
-            List(selectedFolder!.folders) { folder in
-                EntryFolder(folder: folder)
-            }
+            List {
+                Section(header: Text("Folders")) {
+                    ForEach(selectedFolder!.folders) { folder in
+                        EntryFolder(folder: folder)
+                    }
+                }
+                Section(header: Text("Notes")) {
+                    ForEach(selectedFolder!.notes) { note in
+                        EntryNote(note: note)
+                    }
+                }
+            }.toolbar(content: {
+                ToolbarItem (placement: .topBarTrailing){
+                    NavigationLink(destination: Search()) {
+                        Icon(iconName: "magnifyingglass", width: 30, height: 30)
+                                .padding(.trailing, 30)
+                    }
+                }
+            })
             HStack {
                 Button {
                     isVisible.toggle()
@@ -34,7 +40,7 @@ struct Workspace: View {
                         
                 }.padding(.leading, 30)
                 Spacer()
-                NavigationLink(destination: NoteEdit(note: Note(id: 1))) {
+                NavigationLink(destination: NoteEdit(folder: $selectedFolder, note: Note(id: 1))) {
                     Icon(iconName:"square.and.pencil", width: 40, height: 40)
                 }.padding(.trailing, 30)
             }
