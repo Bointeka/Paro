@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Workspace: View {
     @State var isVisible: Bool = false
-    @Binding var selectedFolder: Folder?
+    @Binding var selectedFolder: FolderDev?
     var body: some View {
         NavigationStack {
             Spacer()
@@ -40,7 +40,7 @@ struct Workspace: View {
                         
                 }.padding(.leading, 30)
                 Spacer()
-                NavigationLink(destination: NoteEdit(folder: $selectedFolder, note: Note(id: 1))) {
+                NavigationLink(destination: NoteEdit(folder: $selectedFolder, note: NoteDev(id: 1))) {
                     Icon(iconName:"square.and.pencil", width: 40, height: 40)
                 }.padding(.trailing, 30)
             }
@@ -51,5 +51,5 @@ struct Workspace: View {
 }
 
 #Preview {
-    Workspace(selectedFolder: .constant(Folder(name: "test")))
+    Workspace(selectedFolder: .constant(FolderDev(name: "test")))
 }

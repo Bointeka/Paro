@@ -11,7 +11,7 @@ struct AddFolder: View {
     @State var showCreateAlert = false
     @Binding var isPresented: Bool
     @Binding var folderModel: FolderModel?
-    @Binding var folder: Folder?
+    @Binding var folder: FolderDev?
     @State var folderName: String = ""
     var body: some View {
         GeometryReader {geo in
@@ -26,14 +26,14 @@ struct AddFolder: View {
                     Button {
                         if (folderModel != nil) {
                             do {
-                                try folderModel?.addFolder(Folder(name: folderName))
+                                try folderModel?.addFolder(FolderDev(name: folderName))
                                 isPresented.toggle()
                             } catch {
                                 showCreateAlert.toggle()
                             }
                         } else {
                             do {
-                                try folder?.addFolder(Folder(name: folderName))
+                                try folder?.addFolder(FolderDev(name: folderName))
                                 isPresented.toggle()
                             } catch {
                                 showCreateAlert.toggle()

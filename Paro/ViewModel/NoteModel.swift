@@ -8,9 +8,9 @@
 import SwiftUI
 
 @Observable class NoteModel {
-    var note : Note
+    var note : NoteDev
     
-    init(note: Note) {
+    init(note: NoteDev) {
         self.note = note
     }
 }

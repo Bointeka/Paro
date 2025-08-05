@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EntryNote: View {
-    @State var note: Note
+    @State var note: NoteDev
     var body: some View {
         NavigationLink(destination: NoteEdit(folder: .constant(nil), note: note)) {
             VStack {
@@ -23,5 +23,5 @@ struct EntryNote: View {
 }
 
 #Preview {
-    EntryNote(note: Note(id: 1, title: "Yes"))
+    EntryNote(note: NoteDev(id: 1, title: "Yes"))
 }

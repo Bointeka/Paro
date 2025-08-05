@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Reflection: Equatable {
+struct ReflectionDev: Equatable {
     var timestamp: Date
     var text: String
 }

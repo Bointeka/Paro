@@ -6,12 +6,12 @@
 //
 import Foundation
 
-@Observable class Note: Equatable, Identifiable {
+@Observable class NoteDev: Equatable, Identifiable {
     var id: Int
     var title: String
     var text: String
     var timestamp: Date
-    var reflections: [Reflection] = []
+    var reflections: [ReflectionDev] = []
     
     init (id: Int) {
         self.id = id
@@ -33,7 +33,7 @@ import Foundation
         return dateFormatter.string(from: timestamp)
     }
     
-    static func == (lhs: Note, rhs: Note) -> Bool {
+    static func == (lhs: NoteDev, rhs: NoteDev) -> Bool {
         return lhs.id == rhs.id
     }
     

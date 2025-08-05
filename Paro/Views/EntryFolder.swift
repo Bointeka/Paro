@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EntryFolder: View {
-    @State var folder: Folder?
+    @State var folder: FolderDev?
     var body: some View {
         NavigationLink (destination: Workspace(selectedFolder: $folder)) {
             HStack {
@@ -20,5 +20,5 @@ struct EntryFolder: View {
 }
 
 #Preview {
-    EntryFolder(folder: Folder(name: "test"))
+    EntryFolder(folder: FolderDev(name: "test"))
 }

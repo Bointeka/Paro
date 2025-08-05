@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct NoteEdit: View {
-    @Binding var folder: Folder?
-    @State var note: Note
+    @Binding var folder: FolderDev?
+    @State var note: NoteDev
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         NavigationView {
@@ -46,5 +46,5 @@ struct NoteEdit: View {
 }
 
 #Preview {
-    NoteEdit(folder: .constant(Folder(name: "test")), note: Note(id: 1))
+    NoteEdit(folder: .constant(FolderDev(name: "test")), note: NoteDev(id: 1))
 }

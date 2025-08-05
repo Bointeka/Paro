@@ -7,11 +7,11 @@
 
 import Foundation
 
-@Observable class Folder: Equatable, Identifiable {
+@Observable class FolderDev: Equatable, Identifiable {
     var id: String {name}
     var name: String
-    var notes : [Note]
-    var folders : [Folder]
+    var notes : [NoteDev]
+    var folders : [FolderDev]
     
     init (name: String) {
         self.name = name
@@ -19,22 +19,22 @@ import Foundation
         self.folders = []
     }
     
-    static func == (lhs: Folder, rhs: Folder) -> Bool {
-        return lhs.name == rhs.name 
+    static func == (lhs: FolderDev, rhs: FolderDev) -> Bool {
+        return lhs.name == rhs.name
     }
     
-     func addNote(_ note: Note) {
+     func addNote(_ note: NoteDev) {
         self.notes.append(note)
     }
     
-     func deleteNote(_ note: Note) {
+     func deleteNote(_ note: NoteDev) {
         if let index = self.notes.firstIndex(of: note) {
             self.notes.remove(at: index)
         }
     }
     
     
-     func addFolder(_ folder: Folder) throws {
+     func addFolder(_ folder: FolderDev) throws {
         if let _ = self.folders.firstIndex(of: folder) {
             throw DataValidationError.duplicateFolder
         } else {
@@ -42,7 +42,7 @@ import Foundation
         }
     }
     
-     func deleteFolder(_ folder: Folder) {
+     func deleteFolder(_ folder: FolderDev) {
         if let index = self.folders.firstIndex(of: folder) {
             self.folders.remove(at: index)
         }

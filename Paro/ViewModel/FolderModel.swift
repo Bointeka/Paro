@@ -8,14 +8,14 @@
 import Foundation
 
 @Observable class FolderModel {
-    var folders: [Folder] = []
+    var folders: [FolderDev] = []
     
-    init (folders: [Folder]) {
+    init (folders: [FolderDev]) {
         self.folders = folders;
     }
     
     
-    func addFolder(_ folder: Folder) throws {
+    func addFolder(_ folder: FolderDev) throws {
         if let _ = self.folders.firstIndex(of: folder) {
             throw DataValidationError.duplicateFolder
         } else {
@@ -27,7 +27,7 @@ import Foundation
         
     }
     
-    func deleteFolder(_ folder: Folder) {
+    func deleteFolder(_ folder: FolderDev) {
         if let index = self.folders.firstIndex(of: folder) {
             self.folders.remove(at: index)
         }
