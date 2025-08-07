@@ -12,11 +12,19 @@ import Foundation
     var name: String
     var notes : [NoteDev]
     var folders : [FolderDev]
+    var locked : Bool
+    var passwordHash: PasswordDev?
     
-    init (name: String) {
+    init (name: String, passwordHash: PasswordDev?) {
         self.name = name
         self.notes = []
         self.folders = []
+        self.passwordHash = passwordHash
+        if (passwordHash == nil) {
+            self.locked = false
+        } else {
+            self.locked = true
+        }
     }
     
     static func == (lhs: FolderDev, rhs: FolderDev) -> Bool {
@@ -50,6 +58,12 @@ import Foundation
     
     func getNoteCount() -> Int {
         return notes.count
+    }
+    
+    func unlock(_ password: String) {
+        if (passwordHash!.comparePassword(password)) {
+            self.locked = false
+        }
     }
 }
 

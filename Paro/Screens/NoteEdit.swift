@@ -46,5 +46,19 @@ struct NoteEdit: View {
 }
 
 #Preview {
-    NoteEdit(folder: .constant(FolderDev(name: "test")), note: NoteDev(id: 1))
+    NoteEdit(folder: .constant(NoteEdit.testData()), note: NoteDev(id: 1))
+}
+
+
+extension NoteEdit {
+    static func testData() -> FolderDev{
+        var password: PasswordDev?
+        do {
+            password = try PasswordDev(name: "test", password: "test", hint: "test")
+        } catch {
+            print(error)
+            password = nil
+        }
+        return FolderDev(name: "test", passwordHash: password)
+    }
 }

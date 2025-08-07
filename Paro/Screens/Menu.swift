@@ -10,6 +10,7 @@ import CoreData
 
 struct MenuView: View {
     @Environment(\.colorScheme) var colorScheme
+    @State var passwords: [PasswordDev] = []
     @State var text: String = "testing"
     @State var folderModel: FolderModel? = FolderModel(folders: [])
     @State var isVisible: Bool = false
@@ -20,7 +21,7 @@ struct MenuView: View {
     var body: some View {
         NavigationStack {
             List(folderModel!.folders) {folder in
-                EntryFolder(folder: folder)
+                EntryFolder(folder: folder, passwords: $passwords)
             }.navigationTitle("Folders")
                 .toolbar(content: {
                     ToolbarItem (placement: .topBarTrailing){
@@ -39,12 +40,21 @@ struct MenuView: View {
                 Spacer()
             }
         }.sheet(isPresented: $isVisible) {
-            AddFolder(isPresented: $isVisible, folderModel: $folderModel, folder: .constant(nil))
+            AddFolder(isPresented: $isVisible, folderModel: $folderModel, folder: .constant(nil), passwords: $passwords)
         }
     }
 }
 
 
 #Preview {
-    MenuView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    MenuView(passwords: MenuView.testData().passwords, folderModel: MenuView.testData().folderModel).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+}
+
+extension MenuView {
+    static func testData() -> (passwords: [PasswordDev], folderModel: FolderModel) {
+        var passwords: [PasswordDev] = []
+        passwords.append(PasswordDev(name: "None"))
+        var folderModel: FolderModel = .init(folders: [])
+        return (passwords, folderModel)
+    }
 }

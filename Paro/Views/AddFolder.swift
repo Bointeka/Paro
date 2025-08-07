@@ -9,9 +9,12 @@ import SwiftUI
 
 struct AddFolder: View {
     @State var showCreateAlert = false
+    @State var isOn = false
     @Binding var isPresented: Bool
     @Binding var folderModel: FolderModel?
     @Binding var folder: FolderDev?
+    @Binding var passwords: [PasswordDev]
+    @State var selectedPassword: PasswordDev? = nil
     @State var folderName: String = ""
     var body: some View {
         GeometryReader {geo in
@@ -26,14 +29,14 @@ struct AddFolder: View {
                     Button {
                         if (folderModel != nil) {
                             do {
-                                try folderModel?.addFolder(FolderDev(name: folderName))
+                                try folderModel?.addFolder(FolderDev(name: folderName, passwordHash: selectedPassword))
                                 isPresented.toggle()
                             } catch {
                                 showCreateAlert.toggle()
                             }
                         } else {
                             do {
-                                try folder?.addFolder(FolderDev(name: folderName))
+                                try folder?.addFolder(FolderDev(name: folderName, passwordHash: selectedPassword))
                                 isPresented.toggle()
                             } catch {
                                 showCreateAlert.toggle()
@@ -52,7 +55,17 @@ struct AddFolder: View {
                     .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke())
                     .textInputAutocapitalization(.words)
-                    
+                Toggle(isOn: $isOn) {
+                    Text("Lock Folder")
+                }.padding(.horizontal, geo.size.width * 0.05)
+                    .padding(.vertical, 5)
+                List {
+                    Section(header: Text("Passwords")) {
+                        ForEach(passwords, id: \.self.id) { password in
+                            Text(password.name)
+                        }
+                    }
+                }
             }
             
         }.padding(.top, 20)
@@ -62,5 +75,19 @@ struct AddFolder: View {
 }
 
 #Preview {
-    AddFolder(isPresented: .constant(true as Bool), folderModel: .constant(FolderModel(folders:[])), folder: .constant(nil))
+    AddFolder(isPresented: .constant(true as Bool), folderModel: .constant(FolderModel(folders:[])), folder: .constant(nil), passwords: .constant(AddFolder.testData()))
+}
+
+extension AddFolder {
+    static func testData() -> [PasswordDev] {
+        var passwords: [PasswordDev] = []
+        do {
+            let password = try PasswordDev(name: "test", password: "test", hint: "test")
+            passwords.append(password)
+        } catch {
+            print(error)
+        }
+        
+        return passwords
+    }
 }

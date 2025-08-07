@@ -16,3 +16,17 @@ enum DataValidationError : Error, LocalizedError {
         }
     }
 }
+
+enum PasswordError: Error, LocalizedError {
+    case hashingFailed
+    case incorrectPassword
+    
+    var errorDescription: String? {
+        switch self {
+        case .hashingFailed:
+            return "Failed to hash password."
+        case .incorrectPassword:
+            return "Incorrect password."
+        }
+    }
+}
