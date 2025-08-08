@@ -81,7 +81,7 @@ struct AddFolder: View {
                                 }
                             }
                         }.alert("Create Password", isPresented: $createPassword) {
-                            CreatePassword(passwords: $passwords, createPasswo76rdIsPresent: $createPassword)
+                            CreatePassword(passwords: $passwords, createPasswordIsPresent: $createPassword)
                         }
                     }.transition(.opacity)
                     

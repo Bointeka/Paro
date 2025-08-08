@@ -47,14 +47,7 @@ struct Workspace: View {
                             }
                         }
                     }
-                }.toolbar(content: {
-                    ToolbarItem (placement: .topBarTrailing){
-                        NavigationLink(destination: Search()) {
-                            Icon(iconName: "magnifyingglass", width: 30, height: 30)
-                                .padding(.trailing, 30)
-                        }
-                    }
-                })
+                }
             }
             HStack {
                 Button {
@@ -67,7 +60,14 @@ struct Workspace: View {
                 NavigationLink(destination: NoteEdit(folder: $selectedFolder, note: NoteDev(id: 1))) {
                     Icon(iconName:"square.and.pencil", width: 40, height: 40)
                 }.padding(.trailing, 30)
-            }
+            }.toolbar(content: {
+                ToolbarItem (placement: .topBarTrailing){
+                    NavigationLink(destination: Search()) {
+                        Icon(iconName: "magnifyingglass", width: 30, height: 30)
+                            .padding(.trailing, 30)
+                    }
+                }
+            })
         }.sheet(isPresented: $isVisible) {
             AddFolder(isPresented: $isVisible, folderModel: .constant(nil), folder: $selectedFolder, passwords: $passwords)
         }

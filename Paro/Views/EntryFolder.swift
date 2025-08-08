@@ -11,7 +11,6 @@ struct EntryFolder: View {
     @State var folder: FolderDev
     @State var password: String = ""
     @Binding var passwords: PasswordModel
-    //TODO: Put the locked option on the password. Unlocking one unlocks all
     @State var unlock: Bool = false
     @State var folderCheck: Bool = true
     var body: some View {

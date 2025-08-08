@@ -16,7 +16,7 @@
     <entity name="Password" representedClassName="Password" syncable="YES" codeGenerationType="class">
         <attribute name="hashedPassword" optional="YES" attributeType="String"/>
         <attribute name="hint" optional="YES" attributeType="String"/>
-        <attribute name="locked" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="locked" optional="YES" transient="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="salt" optional="YES" attributeType="String"/>
         <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="passwordHash" inverseEntity="Folder"/>
