@@ -8,6 +8,7 @@ import Foundation
 
 enum DataValidationError : Error, LocalizedError {
     case duplicateFolder
+    case duplicatePassword
     case invalidName
     
     var errorDescription: String? {
@@ -16,6 +17,8 @@ enum DataValidationError : Error, LocalizedError {
             return "There is already a folder with the same name."
         case .invalidName:
             return "The name provided is empty."
+        case .duplicatePassword:
+            return "There is already a password with the same name."
         }
     }
 }

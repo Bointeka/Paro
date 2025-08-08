@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct CreatePassword: View {
-    @Binding var passwords: [PasswordDev]
+    @Binding var passwords: PasswordModel
     @Binding var createPasswordIsPresent: Bool
     
     @State var name: String = ""
     @State var password: String = ""
     @State var hint: String = ""
     @State var presentAlert: Bool = false
+    @State var alertMessage: String = ""
     var body: some View {
         GeometryReader { geo in
             VStack {
@@ -34,12 +35,11 @@ struct CreatePassword: View {
                 HStack {
                     Button {
                         do {
-                            print(passwords.count)
                             let newPassword = try PasswordDev(name: name, password: password, hint: hint)
-                            passwords.append(newPassword)
-                            print(passwords.count)
+                            try passwords.addPassword(newPassword)
                             createPasswordIsPresent.toggle()
                         } catch {
+                            alertMessage = error.localizedDescription
                             presentAlert.toggle()
                         }
                     } label: {
@@ -60,5 +60,5 @@ struct CreatePassword: View {
 }
 
 #Preview {
-    CreatePassword(passwords: .constant([]), createPasswordIsPresent: .constant(true))
+    CreatePassword(passwords: .constant(PasswordModel(passwords: [])), createPasswordIsPresent: .constant(true))
 }

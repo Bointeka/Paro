@@ -21,10 +21,6 @@ import Foundation
         } else {
             self.folders.append(folder)
         }
-        
-        print(self.folders)
-
-        
     }
     
     func deleteFolder(_ folder: FolderDev) {

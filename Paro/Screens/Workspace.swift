@@ -10,7 +10,7 @@ import SwiftUI
 struct Workspace: View {
     @State var isVisible: Bool = false
     @Binding var selectedFolder: FolderDev
-    @Binding var passwords: [PasswordDev]
+    @Binding var passwords: PasswordModel
     var body: some View {
         NavigationStack {
             Spacer()
@@ -77,7 +77,7 @@ struct Workspace: View {
 #Preview {
     
     struct WorkspacePreview: View {
-        @State var passwords: [PasswordDev] = Workspace.testDataPassword()
+        @State var passwords: PasswordModel = Workspace.testDataPassword()
         @State var folder: FolderDev = Workspace.testDataFolder()
         var body: some View {
             Workspace(selectedFolder: $folder, passwords: $passwords)
@@ -100,9 +100,9 @@ extension Workspace {
         return FolderDev(name: "test", passwordHash: password)
     }
     
-    static func testDataPassword() -> [PasswordDev] {
-        var passwords: [PasswordDev] = []
-        passwords.append(PasswordDev(name: "None"))
+    static func testDataPassword() -> PasswordModel {
+        var passwords: PasswordModel = PasswordModel(passwords: [])
+        try! passwords.addPassword(PasswordDev(name: "None"))
         return passwords
     }
 }

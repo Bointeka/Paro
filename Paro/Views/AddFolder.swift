@@ -12,7 +12,7 @@ struct AddFolder: View {
     @Binding var isPresented: Bool
     @Binding var folderModel: FolderModel?
     @Binding var folder: FolderDev
-    @Binding var passwords: [PasswordDev]
+    @Binding var passwords: PasswordModel
     
     @State var selectedPassword: PasswordDev? = nil
     @State var folderName: String = ""
@@ -76,12 +76,12 @@ struct AddFolder: View {
                         }
                         List {
                             Section(header: Text("Passwords")) {
-                                ForEach(passwords, id: \.self.id) { password in
+                                ForEach(passwords.passwords, id: \.self.id) { password in
                                     PasswordSelection(selectedPassword: $selectedPassword, password: password)
                                 }
                             }
                         }.alert("Create Password", isPresented: $createPassword) {
-                            CreatePassword(passwords: $passwords, createPasswordIsPresent: $createPassword)
+                            CreatePassword(passwords: $passwords, createPasswo76rdIsPresent: $createPassword)
                         }
                     }.transition(.opacity)
                     
@@ -97,7 +97,7 @@ struct AddFolder: View {
 #Preview {
     
     struct Preview: View {
-        @State var password: [PasswordDev] = AddFolder.testData()
+        @State var password: PasswordModel = AddFolder.testData()
         var body: some View {
             AddFolder(isPresented: .constant(true as Bool), folderModel: .constant(FolderModel(folders:[])), folder: .constant(FolderDev()), passwords: $password)
         }
@@ -107,11 +107,12 @@ struct AddFolder: View {
 }
 
 extension AddFolder {
-    static func testData() -> [PasswordDev] {
-        var passwords: [PasswordDev] = []
+    static func testData() -> PasswordModel {
+        var passwords: PasswordModel = PasswordModel(passwords: [])
         do {
             var password = try PasswordDev(name: "test", password: "test", hint: "test")
-            passwords.append(password)
+            
+            try passwords.addPassword(password)
         } catch {
             print(error)
         }

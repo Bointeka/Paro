@@ -10,7 +10,7 @@ import SwiftUI
 struct EntryFolder: View {
     @State var folder: FolderDev
     @State var password: String = ""
-    @Binding var passwords: [PasswordDev]
+    @Binding var passwords: PasswordModel
     //TODO: Put the locked option on the password. Unlocking one unlocks all
     @State var unlock: Bool = false
     @State var folderCheck: Bool = true
@@ -68,9 +68,9 @@ extension EntryFolder {
         return FolderDev(name: "test", passwordHash: password)
     }
     
-    static func testDataPasswords() -> [PasswordDev]{
-        var passwords: [PasswordDev] = []
-        passwords.append(PasswordDev(name: "None"))
+    static func testDataPasswords() -> PasswordModel{
+        var passwords: PasswordModel = PasswordModel(passwords: [])
+        try! passwords.addPassword(PasswordDev(name: "None"))
         return passwords
     }
 }
