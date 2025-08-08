@@ -13,6 +13,7 @@ import CryptoSwift
     var hash: String
     var salt: String
     var hint: String
+    var locked: Bool = true
     
     init (name: String) {
         self.name = name
@@ -66,7 +67,15 @@ import CryptoSwift
         }
     }
     
+    func unlock(_ password: String) -> Bool{
+        if (comparePassword(password)) {
+            self.locked = false
+            return true
+        }
+        return false
+    }
+    
     static func == (lhs: PasswordDev, rhs: PasswordDev) -> Bool {
-        return lhs.name == rhs.name
+        return lhs.hash == rhs.hash
     }
 }

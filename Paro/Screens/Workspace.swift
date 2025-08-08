@@ -9,17 +9,17 @@ import SwiftUI
 
 struct Workspace: View {
     @State var isVisible: Bool = false
-    @Binding var selectedFolder: FolderDev?
+    @Binding var selectedFolder: FolderDev
     @Binding var passwords: [PasswordDev]
     var body: some View {
         NavigationStack {
             Spacer()
             List {
                 Section(header: Text("Folders")) {
-                    ForEach(selectedFolder!.folders) { folder in
+                    ForEach(selectedFolder.folders) { folder in
                         EntryFolder(folder: folder, passwords: $passwords).swipeActions (edge: .trailing){
                             Button(role: .destructive) {
-                                selectedFolder?.deleteFolder(folder)
+                                selectedFolder.deleteFolder(folder)
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
@@ -29,14 +29,14 @@ struct Workspace: View {
                                 Label("Move", systemImage: "folder.fill")
                             }
                             
-                        }.disabled(folder.locked)
+                        }
                     }
                 }
                 Section(header: Text("Notes")) {
-                    ForEach(selectedFolder!.notes) { note in
-                        EntryNote(note: note).swipeActions(edge: .trailing) {
+                    ForEach(selectedFolder.notes) { note in
+                        EntryNote(note: note,folder: $selectedFolder).swipeActions(edge: .trailing) {
                             Button(role: .destructive) {
-                                selectedFolder?.deleteNote(note)
+                                selectedFolder.deleteNote(note)
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
@@ -47,15 +47,15 @@ struct Workspace: View {
                             }
                         }
                     }
-                }
-            }.toolbar(content: {
-                ToolbarItem (placement: .topBarTrailing){
-                    NavigationLink(destination: Search()) {
-                        Icon(iconName: "magnifyingglass", width: 30, height: 30)
-                            .padding(.trailing, 30)
+                }.toolbar(content: {
+                    ToolbarItem (placement: .topBarTrailing){
+                        NavigationLink(destination: Search()) {
+                            Icon(iconName: "magnifyingglass", width: 30, height: 30)
+                                .padding(.trailing, 30)
+                        }
                     }
-                }
-            })
+                })
+            }
             HStack {
                 Button {
                     isVisible.toggle()
@@ -75,7 +75,16 @@ struct Workspace: View {
 }
 
 #Preview {
-    Workspace(selectedFolder: .constant(Workspace.testDataFolder()), passwords: .constant(Workspace.testDataPassword()))
+    
+    struct WorkspacePreview: View {
+        @State var passwords: [PasswordDev] = Workspace.testDataPassword()
+        @State var folder: FolderDev = Workspace.testDataFolder()
+        var body: some View {
+            Workspace(selectedFolder: $folder, passwords: $passwords)
+        }
+    }
+    return WorkspacePreview()
+    
 }
 
 

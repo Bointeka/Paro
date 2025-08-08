@@ -12,7 +12,6 @@ import Foundation
     var name: String
     var notes : [NoteDev]
     var folders : [FolderDev]
-    var locked : Bool
     var passwordHash: PasswordDev?
     
     init () {
@@ -20,7 +19,6 @@ import Foundation
         self.notes = []
         self.folders = []
         self.passwordHash = nil
-        self.locked = false
     }
     
     
@@ -29,19 +27,19 @@ import Foundation
         self.notes = []
         self.folders = []
         self.passwordHash = passwordHash
-        if (passwordHash == nil) {
-            self.locked = false
-        } else {
-            self.locked = true
-        }
     }
     
     static func == (lhs: FolderDev, rhs: FolderDev) -> Bool {
         return lhs.name == rhs.name
     }
     
-     func addNote(_ note: NoteDev) {
-        self.notes.append(note)
+    func addNote(_ note: NoteDev) {
+        if let _ = self.notes.firstIndex(where: { $0.id == note.id }) {
+            //Do nothing since it is already in the array
+        } else {
+            note.id = notes.count
+            self.notes.append(note)
+        }
     }
     
      func deleteNote(_ note: NoteDev) {
@@ -54,6 +52,8 @@ import Foundation
      func addFolder(_ folder: FolderDev) throws {
         if let _ = self.folders.firstIndex(of: folder) {
             throw DataValidationError.duplicateFolder
+        } else if folder.name == ""{
+            throw DataValidationError.invalidName
         } else {
             self.folders.append(folder)
         }
@@ -69,11 +69,6 @@ import Foundation
         return notes.count
     }
     
-    func unlock(_ password: String) {
-        if (passwordHash!.comparePassword(password)) {
-            self.locked = false
-        }
-    }
 }
 
 

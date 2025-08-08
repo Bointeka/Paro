@@ -17,6 +17,7 @@ struct MenuView: View {
     
     @State var searchBar: Bool = false;
     @State var searchText: String = ""
+    @State var emptyFolder: FolderDev = FolderDev()
     
     var body: some View {
         NavigationStack {
@@ -31,6 +32,7 @@ struct MenuView: View {
                         }
                     }
                 })
+                
             HStack {
                 Button {
                     isVisible.toggle()
@@ -40,7 +42,7 @@ struct MenuView: View {
                 Spacer()
             }
         }.sheet(isPresented: $isVisible) {
-            AddFolder(isPresented: $isVisible, folderModel: $folderModel, folder: .constant(nil), passwords: $passwords)
+            AddFolder(isPresented: $isVisible, folderModel: $folderModel, folder: $emptyFolder, passwords: $passwords)
         }
     }
 }

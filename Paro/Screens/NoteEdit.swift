@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct NoteEdit: View {
-    @Binding var folder: FolderDev?
+    @Binding var folder: FolderDev
     @State var note: NoteDev
     @Environment(\.dismiss) private var dismiss
     var body: some View {
@@ -22,6 +22,7 @@ struct NoteEdit: View {
                         .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
                         .overlay(RoundedRectangle(cornerRadius: 10).stroke())
                         .padding(EdgeInsets(top: 5, leading: 10, bottom: 10, trailing: 10))
+                        .contentShape(Rectangle())
                     
                 }.cornerRadius(10)
                     .background(.grassGreen) 
@@ -31,9 +32,7 @@ struct NoteEdit: View {
             }
         }.navigationBarBackButtonHidden(true)
             .navigationBarItems(leading: Button {
-                if folder != nil {
-                    folder?.addNote(note)
-                }
+                folder.addNote(note)
                 dismiss()
             } label: {
                 Icon(iconName:"chevron.backward", width: 20, height: 20)

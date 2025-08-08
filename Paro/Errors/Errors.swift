@@ -8,11 +8,14 @@ import Foundation
 
 enum DataValidationError : Error, LocalizedError {
     case duplicateFolder
+    case invalidName
     
     var errorDescription: String? {
         switch self {
         case .duplicateFolder:
             return "There is already a folder with the same name."
+        case .invalidName:
+            return "The name provided is empty."
         }
     }
 }

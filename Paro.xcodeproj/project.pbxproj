@@ -34,6 +34,22 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		EE47B5102E458F2F00B0CDEB /* Exceptions for "Paro" folder in "ParoTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Views/CreatePassword.swift,
+				Views/PasswordSelection.swift,
+			);
+			target = EEA0B46B2E1766BC00E54FC6 /* ParoTests */;
+		};
+		EE47B5112E458F2F00B0CDEB /* Exceptions for "Paro" folder in "ParoUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Views/CreatePassword.swift,
+				Views/PasswordSelection.swift,
+			);
+			target = EEA0B4752E1766BC00E54FC6 /* ParoUITests */;
+		};
 		EEA0B47E2E1766BC00E54FC6 /* Exceptions for "Paro" folder in "Paro" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -48,6 +64,8 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				EEA0B47E2E1766BC00E54FC6 /* Exceptions for "Paro" folder in "Paro" target */,
+				EE47B5102E458F2F00B0CDEB /* Exceptions for "Paro" folder in "ParoTests" target */,
+				EE47B5112E458F2F00B0CDEB /* Exceptions for "Paro" folder in "ParoUITests" target */,
 			);
 			path = Paro;
 			sourceTree = "<group>";

@@ -11,7 +11,7 @@ struct AddFolder: View {
     
     @Binding var isPresented: Bool
     @Binding var folderModel: FolderModel?
-    @Binding var folder: FolderDev?
+    @Binding var folder: FolderDev
     @Binding var passwords: [PasswordDev]
     
     @State var selectedPassword: PasswordDev? = nil
@@ -20,6 +20,7 @@ struct AddFolder: View {
     @State var lock = false
     @State var createPassword = false
     @State var newPassword: PasswordDev? = nil
+    @State var alertMessage: String = ""
     var body: some View {
         GeometryReader {geo in
             VStack {
@@ -36,13 +37,15 @@ struct AddFolder: View {
                                 try folderModel?.addFolder(FolderDev(name: folderName, passwordHash: selectedPassword))
                                 isPresented.toggle()
                             } catch {
+                                alertMessage = error.localizedDescription
                                 showCreateAlert.toggle()
                             }
                         } else {
                             do {
-                                try folder?.addFolder(FolderDev(name: folderName, passwordHash: selectedPassword))
+                                try folder.addFolder(FolderDev(name: folderName, passwordHash: selectedPassword))
                                 isPresented.toggle()
                             } catch {
+                                alertMessage = error.localizedDescription
                                 showCreateAlert.toggle()
                             }
                         }
@@ -51,7 +54,7 @@ struct AddFolder: View {
                     } label: {
                         Text("Create")
                     }.padding(.horizontal, geo.size.width * 0.05)
-                        .alert("There is already a folder with the same name.", isPresented: $showCreateAlert) {
+                        .alert(alertMessage, isPresented: $showCreateAlert) {
                         }
                 }.padding(.vertical, 10)
                 TextField("Folder Name", text: $folderName)
@@ -59,6 +62,7 @@ struct AddFolder: View {
                     .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke())
                     .textInputAutocapitalization(.words)
+                    .contentShape(Rectangle())
                 Toggle(isOn: $lock.animation()) {
                     Text("Lock Folder")
                 }.padding(.horizontal, geo.size.width * 0.05)
@@ -95,7 +99,7 @@ struct AddFolder: View {
     struct Preview: View {
         @State var password: [PasswordDev] = AddFolder.testData()
         var body: some View {
-            AddFolder(isPresented: .constant(true as Bool), folderModel: .constant(FolderModel(folders:[])), folder: .constant(nil), passwords: $password)
+            AddFolder(isPresented: .constant(true as Bool), folderModel: .constant(FolderModel(folders:[])), folder: .constant(FolderDev()), passwords: $password)
         }
     }
     return Preview()
@@ -106,7 +110,7 @@ extension AddFolder {
     static func testData() -> [PasswordDev] {
         var passwords: [PasswordDev] = []
         do {
-            let password = try PasswordDev(name: "test", password: "test", hint: "test")
+            var password = try PasswordDev(name: "test", password: "test", hint: "test")
             passwords.append(password)
         } catch {
             print(error)
