@@ -7,7 +7,7 @@
 import Foundation
 import CryptoSwift
 
-@Observable class PasswordDev: Identifiable {
+@Observable class PasswordDev: Identifiable, Equatable {
     var id : String { self.name }
     var name: String
     var hash: String
@@ -34,7 +34,8 @@ import CryptoSwift
             let key = try PKCS5.PBKDF2(
                 password: password.bytes,
                 salt: salt.bytes,
-                iterations: 100_000,
+                iterations: 1,
+                //iterations: 100_000,
                 keyLength: 32,
                 variant: .sha2(.sha256)
             ).calculate()
@@ -63,5 +64,9 @@ import CryptoSwift
         } catch {
             return false
         }
+    }
+    
+    static func == (lhs: PasswordDev, rhs: PasswordDev) -> Bool {
+        return lhs.name == rhs.name
     }
 }

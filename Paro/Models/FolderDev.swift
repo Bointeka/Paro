@@ -15,6 +15,15 @@ import Foundation
     var locked : Bool
     var passwordHash: PasswordDev?
     
+    init () {
+        self.name = ""
+        self.notes = []
+        self.folders = []
+        self.passwordHash = nil
+        self.locked = false
+    }
+    
+    
     init (name: String, passwordHash: PasswordDev?) {
         self.name = name
         self.notes = []

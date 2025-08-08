@@ -8,14 +8,18 @@
 import SwiftUI
 
 struct AddFolder: View {
-    @State var showCreateAlert = false
-    @State var isOn = false
+    
     @Binding var isPresented: Bool
     @Binding var folderModel: FolderModel?
     @Binding var folder: FolderDev?
     @Binding var passwords: [PasswordDev]
+    
     @State var selectedPassword: PasswordDev? = nil
     @State var folderName: String = ""
+    @State var showCreateAlert = false
+    @State var lock = false
+    @State var createPassword = false
+    @State var newPassword: PasswordDev? = nil
     var body: some View {
         GeometryReader {geo in
             VStack {
@@ -55,16 +59,28 @@ struct AddFolder: View {
                     .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke())
                     .textInputAutocapitalization(.words)
-                Toggle(isOn: $isOn) {
+                Toggle(isOn: $lock.animation()) {
                     Text("Lock Folder")
                 }.padding(.horizontal, geo.size.width * 0.05)
                     .padding(.vertical, 5)
-                List {
-                    Section(header: Text("Passwords")) {
-                        ForEach(passwords, id: \.self.id) { password in
-                            Text(password.name)
+                if (lock) {
+                    VStack{
+                        Button {
+                            createPassword.toggle()
+                        } label: {
+                            Text("Create Password")
                         }
-                    }
+                        List {
+                            Section(header: Text("Passwords")) {
+                                ForEach(passwords, id: \.self.id) { password in
+                                    PasswordSelection(selectedPassword: $selectedPassword, password: password)
+                                }
+                            }
+                        }.alert("Create Password", isPresented: $createPassword) {
+                            CreatePassword(passwords: $passwords, createPasswordIsPresent: $createPassword)
+                        }
+                    }.transition(.opacity)
+                    
                 }
             }
             
@@ -75,7 +91,15 @@ struct AddFolder: View {
 }
 
 #Preview {
-    AddFolder(isPresented: .constant(true as Bool), folderModel: .constant(FolderModel(folders:[])), folder: .constant(nil), passwords: .constant(AddFolder.testData()))
+    
+    struct Preview: View {
+        @State var password: [PasswordDev] = AddFolder.testData()
+        var body: some View {
+            AddFolder(isPresented: .constant(true as Bool), folderModel: .constant(FolderModel(folders:[])), folder: .constant(nil), passwords: $password)
+        }
+    }
+    return Preview()
+    
 }
 
 extension AddFolder {
