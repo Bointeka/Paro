@@ -9,14 +9,19 @@ import SwiftUI
 
 struct Workspace: View {
     @State var isVisible: Bool = false
-    @Binding var selectedFolder: FolderDev
+    @State var selectedFolder: FolderDev
     @Binding var passwords: PasswordModel
+    
+    @State var path: NavigationPath = NavigationPath()
+    @State var unlock: Bool = false
+    @State var password: String = ""
     var body: some View {
-        NavigationStack {
+        NavigationStack (path: $path){
             Spacer()
             List {
                 Section(header: Text("Folders")) {
-                    ForEach(selectedFolder.folders) { folder in
+                    //TODO: Figure out why swift navigates back whenever button is pressed to navigate forward. Tried chat gpt suggestions
+                    ForEach(selectedFolder.folders , id: \.self.id) { folder in
                         EntryFolder(folder: folder, passwords: $passwords).swipeActions (edge: .trailing){
                             Button(role: .destructive) {
                                 selectedFolder.deleteFolder(folder)
@@ -29,6 +34,32 @@ struct Workspace: View {
                                 Label("Move", systemImage: "folder.fill")
                             }
                             
+                        }.onTapGesture {
+                            if (folder.passwordHash != nil && folder.passwordHash!.locked){
+                                unlock.toggle()
+                            } else {
+                                print(folder)
+                                path.append(folder)
+                            }
+                            
+                        }.alert("Unlock folder", isPresented: $unlock) {
+                            TextField("Password", text: $password)
+                            HStack {
+                                Button {
+                                    if (folder.passwordHash != nil && folder.passwordHash!.unlock(password)) {
+                                        unlock.toggle()
+                                        path.append(folder)
+                                        password = ""
+                                    }
+                                } label : {
+                                    Text("Unlock")
+                                }
+                                Button {
+                                    unlock.toggle()
+                                } label : {
+                                    Text("Cancel")
+                                }
+                            }
                         }
                     }
                 }
@@ -48,6 +79,8 @@ struct Workspace: View {
                         }
                     }
                 }
+            }.navigationDestination(for: FolderDev.self) { folder in
+                Workspace(selectedFolder: folder, passwords: $passwords)
             }
             HStack {
                 Button {
@@ -80,7 +113,7 @@ struct Workspace: View {
         @State var passwords: PasswordModel = Workspace.testDataPassword()
         @State var folder: FolderDev = Workspace.testDataFolder()
         var body: some View {
-            Workspace(selectedFolder: $folder, passwords: $passwords)
+            Workspace(selectedFolder: folder, passwords: $passwords)
         }
     }
     return WorkspacePreview()

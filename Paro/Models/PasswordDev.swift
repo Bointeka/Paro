@@ -52,7 +52,7 @@ import CryptoSwift
             let key = try PKCS5.PBKDF2(
                 password: password.bytes,
                 salt: salt.bytes,
-                iterations: 100_000,
+                iterations: 1,
                 keyLength: 32,
                 variant: .sha2(.sha256)
             ).calculate()
@@ -68,8 +68,8 @@ import CryptoSwift
     }
     
     func unlock(_ password: String) -> Bool{
-        if (comparePassword(password)) {
-            self.locked = false
+        if (self.locked && comparePassword(password)) {
+            self.locked.toggle()
             return true
         }
         return false

@@ -7,7 +7,7 @@
 
 import Foundation
 
-@Observable class FolderDev: Equatable, Identifiable {
+@Observable class FolderDev: Equatable, Identifiable, Hashable {
     var id: String {name}
     var name: String
     var notes : [NoteDev]
@@ -67,6 +67,10 @@ import Foundation
     
     func getNoteCount() -> Int {
         return notes.count
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
     }
     
 }

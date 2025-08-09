@@ -14,39 +14,15 @@ struct EntryFolder: View {
     @State var unlock: Bool = false
     @State var folderCheck: Bool = true
     var body: some View {
-        NavigationLink (destination: Workspace(selectedFolder: $folder, passwords: $passwords)) {
-            HStack {
-                Text(folder.name)
-                Spacer()
-                if (folder.passwordHash?.locked ?? false) {
-                    Icon(iconName: "lock", width: 15, height: 15)
-                } else {
-                    Icon(iconName: "unlock", width: 15, height: 15)
-                }
+        HStack {
+            Text(folder.name)
+            Spacer()
+            if (folder.passwordHash != nil && folder.passwordHash!.locked == true) {
+                Icon(iconName: "lock", width: 15, height: 15)
+            } else if (folder.passwordHash != nil && folder.passwordHash!.locked == false) {
+                Icon(iconName: "lock.open", width: 15, height: 15)
             }
         }.contentShape(Rectangle())
-            .onTapGesture {
-                if (folder.passwordHash?.locked ?? false) {
-                    unlock.toggle()
-                }
-            }
-        .alert("Unlock folder", isPresented: $unlock) {
-            TextField("Password", text: $password)
-            HStack {
-                Button {
-                    if (folder.passwordHash!.unlock(password)) {
-                        unlock.toggle()
-                    }
-                } label : {
-                    Text("Unlock")
-                }
-                Button {
-                    unlock.toggle()
-                } label : {
-                    Text("Cancel")
-                }
-            }
-        }
     }
 }
 
