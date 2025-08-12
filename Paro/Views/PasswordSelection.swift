@@ -15,7 +15,7 @@ struct PasswordSelection: View {
             Text(password.name)
             Spacer()
             if (selectedPassword == password) {
-                Icon(iconName: "checkmark.circle", width: 10,  height:10)
+                Icon(iconName: "checkmark.circle", width: 15,  height:15)
             }
         }.contentShape(Rectangle())
         .onTapGesture {

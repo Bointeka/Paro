@@ -14,6 +14,7 @@ struct AddFolder: View {
     @Binding var folder: FolderDev
     @Binding var passwords: PasswordModel
     
+    @FocusState var focused: Bool
     @State var selectedPassword: PasswordDev? = nil
     @State var folderName: String = ""
     @State var showCreateAlert = false
@@ -21,6 +22,7 @@ struct AddFolder: View {
     @State var createPassword = false
     @State var newPassword: PasswordDev? = nil
     @State var alertMessage: String = ""
+    
     var body: some View {
         GeometryReader {geo in
             VStack {
@@ -63,6 +65,7 @@ struct AddFolder: View {
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke())
                     .textInputAutocapitalization(.words)
                     .contentShape(Rectangle())
+                    .focused($focused)
                 Toggle(isOn: $lock.animation()) {
                     Text("Lock Folder")
                 }.padding(.horizontal, geo.size.width * 0.05)
@@ -89,6 +92,9 @@ struct AddFolder: View {
             }
             
         }.padding(.top, 20)
+            .onAppear {
+                focused = true
+            }
         Spacer()
        
     }
@@ -108,9 +114,9 @@ struct AddFolder: View {
 
 extension AddFolder {
     static func testData() -> PasswordModel {
-        var passwords: PasswordModel = PasswordModel(passwords: [])
+        let passwords: PasswordModel = PasswordModel(passwords: [])
         do {
-            var password = try PasswordDev(name: "test", password: "test", hint: "test")
+            let password = try PasswordDev(name: "test", password: "test", hint: "test")
             
             try passwords.addPassword(password)
         } catch {

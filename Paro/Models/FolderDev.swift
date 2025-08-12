@@ -36,7 +36,7 @@ import Foundation
     func addNote(_ note: NoteDev) {
         if let _ = self.notes.firstIndex(where: { $0.id == note.id }) {
             //Do nothing since it is already in the array
-        } else {
+        } else if (note.title != ""){
             note.id = notes.count
             self.notes.append(note)
         }

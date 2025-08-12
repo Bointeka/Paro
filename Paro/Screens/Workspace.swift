@@ -8,19 +8,17 @@
 import SwiftUI
 
 struct Workspace: View {
+    @Binding var passwords: PasswordModel
+    @Binding var path: NavigationPath
+    
     @State var isVisible: Bool = false
     @State var selectedFolder: FolderDev
-    @Binding var passwords: PasswordModel
-    
-    @State var path: NavigationPath = NavigationPath()
     @State var unlock: Bool = false
     @State var password: String = ""
+    
     var body: some View {
-        NavigationStack (path: $path){
-            Spacer()
             List {
                 Section(header: Text("Folders")) {
-                    //TODO: Figure out why swift navigates back whenever button is pressed to navigate forward. Tried chat gpt suggestions
                     ForEach(selectedFolder.folders , id: \.self.id) { folder in
                         EntryFolder(folder: folder, passwords: $passwords).swipeActions (edge: .trailing){
                             Button(role: .destructive) {
@@ -38,7 +36,6 @@ struct Workspace: View {
                             if (folder.passwordHash != nil && folder.passwordHash!.locked){
                                 unlock.toggle()
                             } else {
-                                print(folder)
                                 path.append(folder)
                             }
                             
@@ -80,8 +77,15 @@ struct Workspace: View {
                     }
                 }
             }.navigationDestination(for: FolderDev.self) { folder in
-                Workspace(selectedFolder: folder, passwords: $passwords)
-            }
+                Workspace(passwords: $passwords, path: $path, selectedFolder: folder)
+            }.toolbar(content: {
+                ToolbarItem (placement: .topBarTrailing){
+                    NavigationLink(destination: Search()) {
+                        Icon(iconName: "magnifyingglass", width: 25, height: 25)
+                            .padding(.trailing, 30)
+                    }
+                }
+            })
             HStack {
                 Button {
                     isVisible.toggle()
@@ -93,16 +97,8 @@ struct Workspace: View {
                 NavigationLink(destination: NoteEdit(folder: $selectedFolder, note: NoteDev(id: 1))) {
                     Icon(iconName:"square.and.pencil", width: 40, height: 40)
                 }.padding(.trailing, 30)
-            }.toolbar(content: {
-                ToolbarItem (placement: .topBarTrailing){
-                    NavigationLink(destination: Search()) {
-                        Icon(iconName: "magnifyingglass", width: 30, height: 30)
-                            .padding(.trailing, 30)
-                    }
-                }
-            })
-        }.sheet(isPresented: $isVisible) {
-            AddFolder(isPresented: $isVisible, folderModel: .constant(nil), folder: $selectedFolder, passwords: $passwords)
+            }.sheet(isPresented: $isVisible) {
+                AddFolder(isPresented: $isVisible, folderModel: .constant(nil), folder: $selectedFolder, passwords: $passwords)
         }
     }
 }
@@ -112,8 +108,9 @@ struct Workspace: View {
     struct WorkspacePreview: View {
         @State var passwords: PasswordModel = Workspace.testDataPassword()
         @State var folder: FolderDev = Workspace.testDataFolder()
+        @State var path: NavigationPath = NavigationPath()
         var body: some View {
-            Workspace(selectedFolder: folder, passwords: $passwords)
+            Workspace(passwords: $passwords, path: $path, selectedFolder: folder)
         }
     }
     return WorkspacePreview()
@@ -134,7 +131,7 @@ extension Workspace {
     }
     
     static func testDataPassword() -> PasswordModel {
-        var passwords: PasswordModel = PasswordModel(passwords: [])
+        let passwords: PasswordModel = PasswordModel(passwords: [])
         try! passwords.addPassword(PasswordDev(name: "None"))
         return passwords
     }

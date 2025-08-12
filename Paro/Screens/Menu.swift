@@ -16,20 +16,52 @@ struct MenuView: View {
     @State var passwordModel: PasswordModel = PasswordModel(passwords: [])
     @State var isVisible: Bool = false
     
-    @State var searchBar: Bool = false;
+    @State var searchBar: Bool = false
+    @State var path: NavigationPath = NavigationPath()
     @State var searchText: String = ""
     @State var emptyFolder: FolderDev = FolderDev()
-    
+    @State var unlock: Bool = false
+    @State var password: String = ""
     var body: some View {
-        NavigationStack {
+        NavigationStack (path: $path){
             List(folderModel!.folders) {folder in
                 EntryFolder(folder: folder, passwords: $passwordModel)
+                    .onTapGesture {
+                    if (folder.passwordHash != nil && folder.passwordHash!.locked){
+                        unlock.toggle()
+                    } else {
+                        path.append(folder)
+                    }
+                    
+                }.alert("Unlock folder", isPresented: $unlock) {
+                    TextField("Password", text: $password)
+                    HStack {
+                        Button {
+                            if (folder.passwordHash != nil && folder.passwordHash!.unlock(password)) {
+                                unlock.toggle()
+                                path.append(folder)
+                                password = ""
+                            }
+                        } label : {
+                            Text("Unlock")
+                        }
+                        Button {
+                            unlock.toggle()
+                        } label : {
+                            Text("Cancel")
+                        }
+                    }
+                }
             }.navigationTitle("Folders")
+            .navigationDestination(for: FolderDev.self) {
+                    folder in
+                Workspace(passwords: $passwordModel, path: $path, selectedFolder: folder )
+                }
                 .toolbar(content: {
                     ToolbarItem (placement: .topBarTrailing){
                         NavigationLink(destination: Search()) {
-                            Icon(iconName: "magnifyingglass", width: 30, height: 30)
-                                    .padding(.trailing, 30)
+                            Icon(iconName: "magnifyingglass", width: 25, height: 25)
+                                    .padding(.trailing, 20)
                         }
                     }
                 })

@@ -33,6 +33,19 @@ import Foundation
         return dateFormatter.string(from: timestamp)
     }
     
+    func addReflection(_ reflection: ReflectionDev) {
+        reflection.id = reflections.count
+        if (reflection.text != "" ) {
+            self.reflections.insert(reflection, at: 0)
+        }
+    }
+    
+    func deleteReflection(_ reflection: ReflectionDev) {
+        if let index = self.reflections.firstIndex(where: {reflection.id == $0.id}) {
+            self.reflections.remove(at: index)
+        }
+    }
+    
     static func == (lhs: NoteDev, rhs: NoteDev) -> Bool {
         return lhs.id == rhs.id
     }
