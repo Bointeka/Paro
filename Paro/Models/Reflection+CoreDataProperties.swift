@@ -28,7 +28,10 @@ extension Reflection : Identifiable {
         set { text_ = newValue }
     }
     var timestamp: Date {
-        get { timestamp_ ?? Date()}
-        set { timestamp_ = newValue }
+        timestamp_ ?? Date()
+    }
+    
+    public override func awakeFromInsert() {
+        self.timestamp_ = Date()
     }
 }

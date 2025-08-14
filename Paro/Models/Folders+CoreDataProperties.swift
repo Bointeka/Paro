@@ -59,8 +59,27 @@ extension Folders {
 
 extension Folders : Identifiable {
     var name : String {
-        set { name_ = newValue}
-        get { name_ ?? ""}
+        name_ ?? ""
     }
     
+    convenience init(name: String, context: NSManagedObjectContext) {
+        self.init(context: context)
+        self.name_ = name
+    }
+    
+    var previewFolders: [Folders] {
+        let context =  PersistenceController.preview.container.viewContext
+        var folders: [Folders] = []
+        
+        for index in 1..<5 {
+            folders.append(Folders(name: "Folder \(index)", context: context))
+        }
+        
+        return folders
+        
+    }
 }
+
+// MARK: Preview Helpers
+
+
