@@ -14,7 +14,6 @@ struct EntryReflection: View {
     
     var body: some View {
         GeometryReader { geo in
-            
             VStack(alignment: hAlignment) {
                 HStack {
                     if hAlignment == .trailing {
@@ -33,10 +32,10 @@ struct EntryReflection: View {
                     }
                     Text(reflection.text)
                         .foregroundColor(Color.white)
-                        .frame(width: geo.size.width * 0.75, alignment: alignment)
+                        .frame(maxWidth: geo.size.width * 0.75, alignment: alignment)
                         .padding(.horizontal, 5)
                         .padding(.vertical, 5)
-                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.gray))
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color.secondary))
                     if hAlignment == .leading {
                         Spacer()
                     }

@@ -14,58 +14,57 @@ struct ReflectionView: View {
     @State var reflection: ReflectionDev = ReflectionDev()
     
     var body: some View {
-        Section("Reflections", content: {
+        GeometryReader { geo in
             VStack {
-                TextEditor(text: $reflection.text)
-                    .frame(minHeight: 150, maxHeight:150)
-                    .overlay(RoundedRectangle(cornerRadius: 10).stroke())
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 30)
                 HStack {
-                    Spacer()
                     Button {
                         note.addReflection(reflection)
                         reflection = ReflectionDev()
                     } label: {
                         Text("Save")
-                    }
+                    }.padding(.horizontal, geo.size.width * 0.05)
                     Spacer()
                     Button {
                         showReflection.toggle()
                     } label: {
                         Text("Cancel")
-                    }
-                    Spacer()
+                    }.padding(.horizontal, geo.size.width * 0.05)
                 }
-                ScrollView {
-                    LazyVStack ( spacing: 30) {
-                        ForEach(note.reflections, id: \.self.id) { reflection in
-                            if (reflection.isEven()) {
-                                EntryReflection(reflection: reflection, hAlignment: .trailing, alignment: .trailing, ).swipeActions (edge: .trailing){
-                                    Button(role: .destructive) {
-                                        note.deleteReflection(reflection)
-                                    } label: {
-                                        Label("Delete", systemImage: "trash")
+                
+                TextEditor(text: $reflection.text)
+                    .frame(minHeight: 150, maxHeight:150)
+                    .overlay(RoundedRectangle(cornerRadius: 10).stroke())
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 10)
+                Section("Reflections", content: {
+                    ScrollView {
+                        LazyVStack ( spacing: 30) {
+                            ForEach(note.reflections, id: \.self.id) { reflection in
+                                if (reflection.isEven()) {
+                                    EntryReflection(reflection: reflection, hAlignment: .trailing, alignment: .trailing, ).swipeActions (edge: .trailing){
+                                        Button(role: .destructive) {
+                                            note.deleteReflection(reflection)
+                                        } label: {
+                                            Label("Delete", systemImage: "trash")
+                                        }
+                                    }
+                                } else {
+                                    EntryReflection(reflection: reflection, hAlignment: .leading, alignment: .leading).swipeActions(edge: .trailing) {
+                                        Button(role: .destructive) {
+                                            note.deleteReflection(reflection)
+                                        } label: {
+                                            Label("Delete", systemImage: "trash")
+                                        }
                                     }
                                 }
-                            } else {
-                                EntryReflection(reflection: reflection, hAlignment: .leading, alignment: .leading).swipeActions(edge: .trailing) {
-                                    Button(role: .destructive) {
-                                        note.deleteReflection(reflection)
-                                    } label: {
-                                        Label("Delete", systemImage: "trash")
-                                    }
-                                }
+                                Spacer()
                             }
-                            Spacer()
                         }
                     }
-                }
+                })
                 Spacer()
             }
-        })
-        
-        
+        }
     }
 }
 
