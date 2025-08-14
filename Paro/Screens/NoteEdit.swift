@@ -71,9 +71,10 @@ struct NoteEdit: View {
 
 extension NoteEdit {
     static func testData() -> FolderDev{
-        var password: PasswordDev?
+        let context = PersistenceController.preview.container.viewContext
+        var password: Password?
         do {
-            password = try PasswordDev(name: "test", password: "test", hint: "test")
+            password = try Password(name: "test", password: "test", hint: "test", context: context)
         } catch {
             print(error)
             password = nil

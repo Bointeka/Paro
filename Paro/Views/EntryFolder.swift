@@ -10,16 +10,15 @@ import SwiftUI
 struct EntryFolder: View {
     @State var folder: FolderDev
     @State var password: String = ""
-    @Binding var passwords: PasswordModel
     @State var unlock: Bool = false
     @State var folderCheck: Bool = true
     var body: some View {
         HStack {
             Text(folder.name)
             Spacer()
-            if (folder.passwordHash != nil && folder.passwordHash!.locked == true) {
+            if (folder.passwordHash != nil && folder.passwordHash!.locked_ == true) {
                 Icon(iconName: "lock", width: 15, height: 15)
-            } else if (folder.passwordHash != nil && folder.passwordHash!.locked == false) {
+            } else if (folder.passwordHash != nil && folder.passwordHash!.locked_ == false) {
                 Icon(iconName: "lock.open", width: 15, height: 15)
             }
         }.contentShape(Rectangle())
@@ -28,25 +27,20 @@ struct EntryFolder: View {
 
 #Preview {
     
-    EntryFolder(folder: EntryFolder.testData(), passwords: .constant(EntryFolder.testDataPasswords()))
+    EntryFolder(folder: EntryFolder.testData())
 }
 
 extension EntryFolder {
     static func testData() -> FolderDev{
-        var password: PasswordDev?
+        let context = PersistenceController.preview.container.viewContext
+        var password: Password?
         do {
-            password = try PasswordDev(name: "test", password: "test", hint: "test")
+            password = try Password(name: "test", password: "test", hint: "test", context: context)
         } catch {
             print(error)
             password = nil
         }
         return FolderDev(name: "test", passwordHash: password)
-    }
-    
-    static func testDataPasswords() -> PasswordModel{
-        var passwords: PasswordModel = PasswordModel(passwords: [])
-        try! passwords.addPassword(PasswordDev(name: "None"))
-        return passwords
     }
 }
 

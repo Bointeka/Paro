@@ -6,19 +6,20 @@
 //
 
 import Foundation
+import CoreData
 
 @Observable class PasswordModel  {
-    var passwords: [PasswordDev]
+    var passwords: [Password]
     
-    init(passwords: [PasswordDev]) {
+    init(passwords: [Password]) {
         self.passwords = passwords
     }
     
-    func addPassword(_ password: PasswordDev) throws {
-        if let _ = passwords.firstIndex(where: {password.name == $0.name}) {
+    func addPassword(name: String, password: String, hint: String, context: NSManagedObjectContext) throws {
+        if let _ = passwords.firstIndex(where: {name == $0.name}) {
             throw DataValidationError.duplicatePassword
         } else {
-            self.passwords.append(password)
+            self.passwords.append(try Password(name: name, password: password, hint: hint, context: context))
         }
     }
 }

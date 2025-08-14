@@ -12,7 +12,7 @@ import Foundation
     var name: String
     var notes : [NoteDev]
     var folders : [FolderDev]
-    var passwordHash: PasswordDev?
+    var passwordHash: Password?
     
     init () {
         self.name = ""
@@ -22,7 +22,7 @@ import Foundation
     }
     
     
-    init (name: String, passwordHash: PasswordDev?) {
+    init (name: String, passwordHash: Password?) {
         self.name = name
         self.notes = []
         self.folders = []

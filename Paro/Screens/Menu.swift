@@ -10,8 +10,6 @@ import CoreData
 
 struct MenuView: View {
     @Environment(\.colorScheme) var colorScheme
-    @State var passwords: [PasswordDev] = []
-    @State var text: String = "testing"
     @State var folderModel: FolderModel? = FolderModel(folders: [])
     @State var passwordModel: PasswordModel = PasswordModel(passwords: [])
     @State var isVisible: Bool = false
@@ -82,14 +80,11 @@ struct MenuView: View {
 
 
 #Preview {
-    MenuView(passwords: MenuView.testData().passwords, folderModel: MenuView.testData().folderModel).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    MenuView(folderModel: MenuView.testData(), passwordModel: Password.createPasswordModelHelper).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
 
 extension MenuView {
-    static func testData() -> (passwords: [PasswordDev], folderModel: FolderModel) {
-        var passwords: [PasswordDev] = []
-        passwords.append(PasswordDev(name: "None"))
-        var folderModel: FolderModel = .init(folders: [])
-        return (passwords, folderModel)
+    static func testData() -> FolderModel {
+        return FolderModel(folders: [])
     }
 }

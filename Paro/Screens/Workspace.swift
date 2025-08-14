@@ -21,17 +21,7 @@ struct Workspace: View {
                 Section(header: Text("Folders")) {
                     ForEach(selectedFolder.folders , id: \.self.id) { folder in
                         EntryFolder(folder: folder, passwords: $passwords).swipeActions (edge: .trailing){
-                            Button(role: .destructive) {
-                                selectedFolder.deleteFolder(folder)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                            Button {
-                                //TODO: Implement move folder
-                            } label: {
-                                Label("Move", systemImage: "folder.fill")
-                            }
-                            
+                            FolderSwipe(selectedFolder: $selectedFolder, folder: folder)
                         }.onTapGesture {
                             if (folder.passwordHash != nil && folder.passwordHash!.locked){
                                 unlock.toggle()
@@ -63,16 +53,7 @@ struct Workspace: View {
                 Section(header: Text("Notes")) {
                     ForEach(selectedFolder.notes) { note in
                         EntryNote(note: note,folder: $selectedFolder).swipeActions(edge: .trailing) {
-                            Button(role: .destructive) {
-                                selectedFolder.deleteNote(note)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                            Button {
-                                //TODO: Implement lock note (Allow for no edits)
-                            } label: {
-                                Label("Move", systemImage: "lock.fill")
-                            }
+                            NoteSwipe(folder: $selectedFolder, note: note)
                         }
                     }
                 }
@@ -106,7 +87,7 @@ struct Workspace: View {
 #Preview {
     
     struct WorkspacePreview: View {
-        @State var passwords: PasswordModel = Workspace.testDataPassword()
+        @State var passwords: PasswordModel = Password.createPasswordModelHelper
         @State var folder: FolderDev = Workspace.testDataFolder()
         @State var path: NavigationPath = NavigationPath()
         var body: some View {
@@ -120,19 +101,15 @@ struct Workspace: View {
 
 extension Workspace {
     static func testDataFolder() -> FolderDev{
-        var password: PasswordDev?
+        /*let context = PersistenceController.preview.container.viewContext
+        var password: Password?
+        
         do {
-            password = try PasswordDev(name: "test", password: "test", hint: "test")
+            password = try Password(name: "test", password: "test", hint: "test", context: context)
         } catch {
             print(error)
             password = nil
-        }
-        return FolderDev(name: "test", passwordHash: password)
-    }
-    
-    static func testDataPassword() -> PasswordModel {
-        let passwords: PasswordModel = PasswordModel(passwords: [])
-        try! passwords.addPassword(PasswordDev(name: "None"))
-        return passwords
+        } */
+        return FolderDev(name: "test", passwordHash: nil/*password*/)
     }
 }

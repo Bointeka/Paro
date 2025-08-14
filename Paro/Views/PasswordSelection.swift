@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct PasswordSelection: View {
-    @Binding var selectedPassword: PasswordDev?
-    @State var password: PasswordDev
+    @Binding var selectedPassword: Password?
+    @State var password: Password
     var body: some View {
         HStack {
             Text(password.name)
@@ -25,5 +25,13 @@ struct PasswordSelection: View {
 }
 
 #Preview {
-    PasswordSelection(selectedPassword: .constant(nil), password: PasswordDev(name: "test"))
+    PasswordSelection(selectedPassword: .constant(Password.passwordSelectionHelper), password: Password.passwordSelectionHelper)
+}
+
+extension Password {
+    // MARK: preview helpers
+    static var passwordSelectionHelper: Password {
+        let context = PersistenceController.preview.container.viewContext
+        return try! Password(name: "Test", password: "Test", hint: "Test", context: context)
+    }
 }

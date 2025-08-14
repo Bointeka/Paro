@@ -15,12 +15,11 @@ struct AddFolder: View {
     @Binding var passwords: PasswordModel
     
     @FocusState var focused: Bool
-    @State var selectedPassword: PasswordDev? = nil
+    @State var selectedPassword: Password? = nil
     @State var folderName: String = ""
     @State var showCreateAlert = false
     @State var lock = false
     @State var createPassword = false
-    @State var newPassword: PasswordDev? = nil
     @State var alertMessage: String = ""
     
     var body: some View {
@@ -114,15 +113,8 @@ struct AddFolder: View {
 
 extension AddFolder {
     static func testData() -> PasswordModel {
-        let passwords: PasswordModel = PasswordModel(passwords: [])
-        do {
-            let password = try PasswordDev(name: "test", password: "test", hint: "test")
-            
-            try passwords.addPassword(password)
-        } catch {
-            print(error)
-        }
         
-        return passwords
+        
+        return Password.createPasswordModelHelper
     }
 }

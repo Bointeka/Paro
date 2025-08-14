@@ -57,4 +57,12 @@ extension Password : Identifiable {
         }
         return passwords
     }
+    
+    // MARK: Preview Helpers
+    static var createPasswordModelHelper: PasswordModel {
+        //let context = PersistenceController.preview.container.viewContext
+        let passwordModel = PasswordModel(passwords: [])
+        //try! passwordModel.addPassword(name: "Test", password: "Test", hint: "Test", context: context)
+        return passwordModel
+    }
 }

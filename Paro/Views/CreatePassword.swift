@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CreatePassword: View {
+    @Environment(\.managedObjectContext) var managedObjectContext
+    
     @Binding var passwords: PasswordModel
     @Binding var createPasswordIsPresent: Bool
     
@@ -35,8 +37,7 @@ struct CreatePassword: View {
                 HStack {
                     Button {
                         do {
-                            let newPassword = try PasswordDev(name: name, password: password, hint: hint)
-                            try passwords.addPassword(newPassword)
+                            try passwords.addPassword(name: name, password: password, hint: hint, context: managedObjectContext)
                             createPasswordIsPresent.toggle()
                         } catch {
                             alertMessage = error.localizedDescription
