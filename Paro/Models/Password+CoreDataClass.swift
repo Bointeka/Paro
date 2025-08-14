@@ -38,7 +38,6 @@ public class Password: NSManagedObject {
                 keyLength: 32,
                 variant: .sha2(.sha256)
             ).calculate()
-
             if (key.toHexString() == self.hashedPassword) {
                 return true
             } else {

@@ -30,6 +30,7 @@ struct CreatePassword: View {
                     .padding(.horizontal, 10)
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke())
                     .padding(.vertical, 10)
+                    .textInputAutocapitalization(.never)
                 TextField("Hint", text: $hint)
                     .frame(maxWidth: geo.size.width, maxHeight:50)
                     .padding(.horizontal, 10)

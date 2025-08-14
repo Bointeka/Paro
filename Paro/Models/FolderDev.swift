@@ -15,7 +15,7 @@ import Foundation
     var passwordHash: Password?
     
     init () {
-        self.name = ""
+        self.name = "nil"
         self.notes = []
         self.folders = []
         self.passwordHash = nil
@@ -52,7 +52,7 @@ import Foundation
      func addFolder(_ folder: FolderDev) throws {
         if let _ = self.folders.firstIndex(of: folder) {
             throw DataValidationError.duplicateFolder
-        } else if folder.name == ""{
+        } else if folder.name == "" || folder.name == "nil"{
             throw DataValidationError.invalidName
         } else {
             self.folders.append(folder)

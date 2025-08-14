@@ -10,20 +10,20 @@ import CoreData
 
 struct MenuView: View {
     @Environment(\.colorScheme) var colorScheme
-    @State var folderModel: FolderModel? = FolderModel(folders: [])
+    @State var folderModel: FolderModel = FolderModel(folders: [])
     @State var passwordModel: PasswordModel = PasswordModel(passwords: [])
     @State var isVisible: Bool = false
     
     @State var searchBar: Bool = false
     @State var path: NavigationPath = NavigationPath()
     @State var searchText: String = ""
-    @State var emptyFolder: FolderDev = FolderDev()
+    @State var emptyFolder: FolderDev = FolderDev(name: "nil", passwordHash: nil)
     @State var unlock: Bool = false
     @State var password: String = ""
     var body: some View {
         NavigationStack (path: $path){
-            List(folderModel!.folders) {folder in
-                EntryFolder(folder: folder)
+            List($folderModel.folders) { $folder in
+                EntryFolder(folder: $folder)
                     .onTapGesture {
                         if (folder.passwordHash != nil && folder.passwordHash!.locked_){
                             unlock.toggle()
@@ -32,7 +32,7 @@ struct MenuView: View {
                         }
                         
                     }.alert("Unlock folder", isPresented: $unlock) {
-                        TextField("Password", text: $password)
+                        SecureField("Password", text: $password)
                         HStack {
                             Button {
                                 if (folder.passwordHash != nil && folder.passwordHash!.unlock(password)) {
@@ -50,19 +50,12 @@ struct MenuView: View {
                             }
                         }
                     }
-            }.navigationTitle("Folders")
+            }
+                .navigationTitle("Folders")
                 .navigationDestination(for: FolderDev.self) {
                     folder in
                     Workspace(passwords: $passwordModel, path: $path, selectedFolder: folder )
                 }
-                .toolbar(content: {
-                    ToolbarItem (placement: .topBarTrailing){
-                        NavigationLink(destination: Search()) {
-                            Icon(iconName: "magnifyingglass", width: 25, height: 25)
-                                .padding(.trailing, 20)
-                        }
-                    }
-                })
             
             HStack {
                 Button {

@@ -10,7 +10,7 @@ import SwiftUI
 struct AddFolder: View {
     
     @Binding var isPresented: Bool
-    @Binding var folderModel: FolderModel?
+    @Binding var folderModel: FolderModel
     @Binding var folder: FolderDev
     @Binding var passwords: PasswordModel
     
@@ -33,15 +33,7 @@ struct AddFolder: View {
                     }.padding(.horizontal, geo.size.width * 0.05)
                     Spacer()
                     Button {
-                        if (folderModel != nil) {
-                            do {
-                                try folderModel?.addFolder(FolderDev(name: folderName, passwordHash: selectedPassword))
-                                isPresented.toggle()
-                            } catch {
-                                alertMessage = error.localizedDescription
-                                showCreateAlert.toggle()
-                            }
-                        } else {
+                        if (folder.name != "nil") {
                             do {
                                 try folder.addFolder(FolderDev(name: folderName, passwordHash: selectedPassword))
                                 isPresented.toggle()
@@ -49,6 +41,15 @@ struct AddFolder: View {
                                 alertMessage = error.localizedDescription
                                 showCreateAlert.toggle()
                             }
+                        } else {
+                            do {
+                                try folderModel.addFolder(FolderDev(name: folderName, passwordHash: selectedPassword))
+                                isPresented.toggle()
+                            } catch {
+                                alertMessage = error.localizedDescription
+                                showCreateAlert.toggle()
+                            }
+                            
                         }
                        
                         

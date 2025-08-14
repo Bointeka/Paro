@@ -15,12 +15,13 @@ struct Workspace: View {
     @State var selectedFolder: FolderDev
     @State var unlock: Bool = false
     @State var password: String = ""
+    @State var blankModel: FolderModel = FolderModel(folders: [])
     
     var body: some View {
             List {
                 Section(header: Text("Folders")) {
-                    ForEach(selectedFolder.folders , id: \.self.id) { folder in
-                        EntryFolder(folder: folder).swipeActions (edge: .trailing){
+                    ForEach($selectedFolder.folders , id: \.self.id) { $folder in
+                        EntryFolder(folder: $folder).swipeActions (edge: .trailing){
                             FolderSwipe(selectedFolder: $selectedFolder, folder: folder)
                         }.onTapGesture {
                             if (folder.passwordHash != nil && folder.passwordHash!.locked_){
@@ -30,7 +31,7 @@ struct Workspace: View {
                             }
                             
                         }.alert("Unlock folder", isPresented: $unlock) {
-                            TextField("Password", text: $password)
+                            SecureField("Password", text: $password)
                             HStack {
                                 Button {
                                     if (folder.passwordHash != nil && folder.passwordHash!.unlock(password)) {
@@ -79,7 +80,7 @@ struct Workspace: View {
                     Icon(iconName:"square.and.pencil", width: 40, height: 40)
                 }.padding(.trailing, 30)
             }.sheet(isPresented: $isVisible) {
-                AddFolder(isPresented: $isVisible, folderModel: .constant(nil), folder: $selectedFolder, passwords: $passwords)
+                AddFolder(isPresented: $isVisible, folderModel: $blankModel, folder: $selectedFolder, passwords: $passwords)
         }
     }
 }

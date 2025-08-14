@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EntryFolder: View {
-    @State var folder: FolderDev
+    @Binding var folder: FolderDev
     @State var unlock: Bool = false
     @State var folderCheck: Bool = true
     var body: some View {
@@ -26,7 +26,7 @@ struct EntryFolder: View {
 
 #Preview {
     
-    EntryFolder(folder: EntryFolder.testData())
+    EntryFolder(folder: .constant(EntryFolder.testData()))
 }
 
 extension EntryFolder {
