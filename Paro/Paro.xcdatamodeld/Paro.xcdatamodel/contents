@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24F74" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
-    <entity name="Folder" representedClassName="Folders" syncable="YES" codeGenerationType="class">
-        <attribute name="name" optional="YES" attributeType="String"/>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24G84" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Folder" representedClassName="Folders" syncable="YES">
+        <attribute name="name_" optional="YES" attributeType="String"/>
         <relationship name="folders" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="folders" inverseEntity="Folder"/>
         <relationship name="notes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="folder" inverseEntity="Note"/>
         <relationship name="passwordHash" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Password" inverseName="folder" inverseEntity="Password"/>
     </entity>
-    <entity name="Note" representedClassName="Note" syncable="YES" codeGenerationType="class">
-        <attribute name="text" optional="YES" attributeType="String" allowsCloudEncryption="YES"/>
-        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="title" attributeType="String" defaultValueString="New Note" allowsCloudEncryption="YES"/>
+    <entity name="Note" representedClassName="Note" syncable="YES">
+        <attribute name="text_" optional="YES" attributeType="String" allowsCloudEncryption="YES"/>
+        <attribute name="timestamp_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="title_" attributeType="String" defaultValueString="New Note" allowsCloudEncryption="YES"/>
         <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="notes" inverseEntity="Folder"/>
         <relationship name="reflections" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Reflection" inverseName="note" inverseEntity="Reflection"/>
     </entity>
-    <entity name="Password" representedClassName="Password" syncable="YES" codeGenerationType="class">
-        <attribute name="hashedPassword" optional="YES" attributeType="String"/>
-        <attribute name="hint" optional="YES" attributeType="String"/>
-        <attribute name="locked" optional="YES" transient="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="salt" optional="YES" attributeType="String"/>
+    <entity name="Password" representedClassName="Password" syncable="YES">
+        <attribute name="hashedPassword_" optional="YES" attributeType="String"/>
+        <attribute name="hint_" optional="YES" attributeType="String"/>
+        <attribute name="locked_" optional="YES" transient="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="name_" optional="YES" attributeType="String"/>
+        <attribute name="salt_" optional="YES" attributeType="String"/>
         <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="passwordHash" inverseEntity="Folder"/>
     </entity>
-    <entity name="Reflection" representedClassName="Reflection" syncable="YES" codeGenerationType="class">
-        <attribute name="text" optional="YES" attributeType="String" allowsCloudEncryption="YES"/>
-        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    <entity name="Reflection" representedClassName="Reflection" syncable="YES">
+        <attribute name="text_" optional="YES" attributeType="String" allowsCloudEncryption="YES"/>
+        <attribute name="timestamp_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="note" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Note" inverseName="reflections" inverseEntity="Note"/>
     </entity>
 </model>

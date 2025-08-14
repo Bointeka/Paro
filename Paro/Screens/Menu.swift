@@ -23,47 +23,47 @@ struct MenuView: View {
     var body: some View {
         NavigationStack (path: $path){
             List(folderModel!.folders) {folder in
-                EntryFolder(folder: folder, passwords: $passwordModel)
+                EntryFolder(folder: folder)
                     .onTapGesture {
-                    if (folder.passwordHash != nil && folder.passwordHash!.locked){
-                        unlock.toggle()
-                    } else {
-                        path.append(folder)
-                    }
-                    
-                }.alert("Unlock folder", isPresented: $unlock) {
-                    TextField("Password", text: $password)
-                    HStack {
-                        Button {
-                            if (folder.passwordHash != nil && folder.passwordHash!.unlock(password)) {
-                                unlock.toggle()
-                                path.append(folder)
-                                password = ""
-                            }
-                        } label : {
-                            Text("Unlock")
-                        }
-                        Button {
+                        if (folder.passwordHash != nil && folder.passwordHash!.locked_){
                             unlock.toggle()
-                        } label : {
-                            Text("Cancel")
+                        } else {
+                            path.append(folder)
+                        }
+                        
+                    }.alert("Unlock folder", isPresented: $unlock) {
+                        TextField("Password", text: $password)
+                        HStack {
+                            Button {
+                                if (folder.passwordHash != nil && folder.passwordHash!.unlock(password)) {
+                                    unlock.toggle()
+                                    path.append(folder)
+                                    password = ""
+                                }
+                            } label : {
+                                Text("Unlock")
+                            }
+                            Button {
+                                unlock.toggle()
+                            } label : {
+                                Text("Cancel")
+                            }
                         }
                     }
-                }
             }.navigationTitle("Folders")
-            .navigationDestination(for: FolderDev.self) {
+                .navigationDestination(for: FolderDev.self) {
                     folder in
-                Workspace(passwords: $passwordModel, path: $path, selectedFolder: folder )
+                    Workspace(passwords: $passwordModel, path: $path, selectedFolder: folder )
                 }
                 .toolbar(content: {
                     ToolbarItem (placement: .topBarTrailing){
                         NavigationLink(destination: Search()) {
                             Icon(iconName: "magnifyingglass", width: 25, height: 25)
-                                    .padding(.trailing, 20)
+                                .padding(.trailing, 20)
                         }
                     }
                 })
-                
+            
             HStack {
                 Button {
                     isVisible.toggle()

@@ -25,5 +25,5 @@ struct NoteSwipe: View {
 }
 
 #Preview {
-    NoteSwipe(folder: FolderDev(name: "Test", passwordHash: nil), note: NoteDev(id: 1, title: "TEST"))
+    NoteSwipe(folder: .constant(FolderDev(name: "Test", passwordHash: nil)), note: NoteDev(id: 1, title: "TEST"))
 }

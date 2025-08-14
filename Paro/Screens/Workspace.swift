@@ -20,10 +20,10 @@ struct Workspace: View {
             List {
                 Section(header: Text("Folders")) {
                     ForEach(selectedFolder.folders , id: \.self.id) { folder in
-                        EntryFolder(folder: folder, passwords: $passwords).swipeActions (edge: .trailing){
+                        EntryFolder(folder: folder).swipeActions (edge: .trailing){
                             FolderSwipe(selectedFolder: $selectedFolder, folder: folder)
                         }.onTapGesture {
-                            if (folder.passwordHash != nil && folder.passwordHash!.locked){
+                            if (folder.passwordHash != nil && folder.passwordHash!.locked_){
                                 unlock.toggle()
                             } else {
                                 path.append(folder)
@@ -101,15 +101,6 @@ struct Workspace: View {
 
 extension Workspace {
     static func testDataFolder() -> FolderDev{
-        /*let context = PersistenceController.preview.container.viewContext
-        var password: Password?
-        
-        do {
-            password = try Password(name: "test", password: "test", hint: "test", context: context)
-        } catch {
-            print(error)
-            password = nil
-        } */
-        return FolderDev(name: "test", passwordHash: nil/*password*/)
+        return FolderDev(name: "test", passwordHash: nil)
     }
 }

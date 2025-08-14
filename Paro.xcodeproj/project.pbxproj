@@ -8,14 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		EE47B5042E442FD900B0CDEB /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EE47B5032E442FD900B0CDEB /* CryptoSwift */; };
-		EED6932D2E4D600E0043E532 /* Password+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED693292E4D600E0043E532 /* Password+CoreDataClass.swift */; };
-		EED6932E2E4D600E0043E532 /* Note+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED693282E4D600E0043E532 /* Note+CoreDataProperties.swift */; };
-		EED6932F2E4D600E0043E532 /* Reflection+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED6932C2E4D600E0043E532 /* Reflection+CoreDataProperties.swift */; };
-		EED693302E4D600E0043E532 /* Folders+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED693252E4D600E0043E532 /* Folders+CoreDataClass.swift */; };
-		EED693312E4D600E0043E532 /* Folders+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED693262E4D600E0043E532 /* Folders+CoreDataProperties.swift */; };
-		EED693322E4D600E0043E532 /* Note+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED693272E4D600E0043E532 /* Note+CoreDataClass.swift */; };
-		EED693332E4D600E0043E532 /* Reflection+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED6932B2E4D600E0043E532 /* Reflection+CoreDataClass.swift */; };
-		EED693342E4D600E0043E532 /* Password+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED6932A2E4D600E0043E532 /* Password+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,14 +31,6 @@
 		EEA0B4582E1766BA00E54FC6 /* Paro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Paro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEA0B46C2E1766BC00E54FC6 /* ParoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEA0B4762E1766BC00E54FC6 /* ParoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		EED693252E4D600E0043E532 /* Folders+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folders+CoreDataClass.swift"; sourceTree = "<group>"; };
-		EED693262E4D600E0043E532 /* Folders+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folders+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		EED693272E4D600E0043E532 /* Note+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataClass.swift"; sourceTree = "<group>"; };
-		EED693282E4D600E0043E532 /* Note+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Note+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		EED693292E4D600E0043E532 /* Password+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Password+CoreDataClass.swift"; sourceTree = "<group>"; };
-		EED6932A2E4D600E0043E532 /* Password+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Password+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		EED6932B2E4D600E0043E532 /* Reflection+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reflection+CoreDataClass.swift"; sourceTree = "<group>"; };
-		EED6932C2E4D600E0043E532 /* Reflection+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reflection+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -127,14 +111,6 @@
 		EEA0B44F2E1766BA00E54FC6 = {
 			isa = PBXGroup;
 			children = (
-				EED693252E4D600E0043E532 /* Folders+CoreDataClass.swift */,
-				EED693262E4D600E0043E532 /* Folders+CoreDataProperties.swift */,
-				EED693272E4D600E0043E532 /* Note+CoreDataClass.swift */,
-				EED693282E4D600E0043E532 /* Note+CoreDataProperties.swift */,
-				EED693292E4D600E0043E532 /* Password+CoreDataClass.swift */,
-				EED6932A2E4D600E0043E532 /* Password+CoreDataProperties.swift */,
-				EED6932B2E4D600E0043E532 /* Reflection+CoreDataClass.swift */,
-				EED6932C2E4D600E0043E532 /* Reflection+CoreDataProperties.swift */,
 				EEA0B45A2E1766BA00E54FC6 /* Paro */,
 				EEA0B46F2E1766BC00E54FC6 /* ParoTests */,
 				EEA0B4792E1766BC00E54FC6 /* ParoUITests */,
@@ -300,14 +276,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EED6932D2E4D600E0043E532 /* Password+CoreDataClass.swift in Sources */,
-				EED6932E2E4D600E0043E532 /* Note+CoreDataProperties.swift in Sources */,
-				EED6932F2E4D600E0043E532 /* Reflection+CoreDataProperties.swift in Sources */,
-				EED693302E4D600E0043E532 /* Folders+CoreDataClass.swift in Sources */,
-				EED693312E4D600E0043E532 /* Folders+CoreDataProperties.swift in Sources */,
-				EED693322E4D600E0043E532 /* Note+CoreDataClass.swift in Sources */,
-				EED693332E4D600E0043E532 /* Reflection+CoreDataClass.swift in Sources */,
-				EED693342E4D600E0043E532 /* Password+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct EntryFolder: View {
     @State var folder: FolderDev
-    @State var password: String = ""
     @State var unlock: Bool = false
     @State var folderCheck: Bool = true
     var body: some View {

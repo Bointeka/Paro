@@ -24,5 +24,5 @@ struct FolderSwipe: View {
 }
 
 #Preview {
-    FolderSwipe(selectedFolder: FolderDev(name: "test", passwordHash: nil), folder: FolderDev(name:"test", passwordHash: nil))
+    FolderSwipe(selectedFolder: .constant(FolderDev(name: "test", passwordHash: nil)), folder: FolderDev(name:"test", passwordHash: nil))
 }
