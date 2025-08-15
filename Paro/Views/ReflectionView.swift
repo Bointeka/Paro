@@ -8,30 +8,34 @@
 import SwiftUI
 
 struct ReflectionView: View {
+    @Environment(\.managedObjectContext) var context
+    
     @Binding var note: NoteDev
     @Binding var showReflection: Bool
     
     @State var reflection: ReflectionDev = ReflectionDev()
+    @State var text: String = ""
     
     var body: some View {
         GeometryReader { geo in
             VStack {
                 HStack {
                     Button {
-                        note.addReflection(reflection)
-                        reflection = ReflectionDev()
-                    } label: {
-                        Text("Save")
-                    }.padding(.horizontal, geo.size.width * 0.05)
-                    Spacer()
-                    Button {
                         showReflection.toggle()
                     } label: {
                         Text("Cancel")
                     }.padding(.horizontal, geo.size.width * 0.05)
+                    Spacer()
+                    Button {
+                        note.addReflection(text, context: context)
+                        reflection = ReflectionDev()
+                    } label: {
+                        Text("Save")
+                    }.padding(.horizontal, geo.size.width * 0.05)
                 }
                 
-                TextEditor(text: $reflection.text)
+                TextEditor(text: $text)
+                    .textInputAutocapitalization(.sentences)
                     .frame(minHeight: 150, maxHeight:150)
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke())
                     .padding(.horizontal, 10)

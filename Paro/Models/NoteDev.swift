@@ -5,13 +5,14 @@
 //  Created by Jeremy Ok on 7/26/25.
 //
 import Foundation
+import CoreData
 
 @Observable class NoteDev: Equatable, Identifiable {
     var id: Int
     var title: String
     var text: String
     var timestamp: Date
-    var reflections: [ReflectionDev] = []
+    var reflections: [Reflection] = []
     
     init (id: Int) {
         self.id = id
@@ -33,14 +34,13 @@ import Foundation
         return dateFormatter.string(from: timestamp)
     }
     
-    func addReflection(_ reflection: ReflectionDev) {
-        reflection.id = reflections.count
-        if (reflection.text != "" ) {
-            self.reflections.insert(reflection, at: 0)
+    func addReflection(_ text: String, context: NSManagedObjectContext) {
+        if (text != "" ) {
+            self.reflections.insert(Reflection(id: Int64(reflections.count), text: text, context: context), at: 0)
         }
     }
     
-    func deleteReflection(_ reflection: ReflectionDev) {
+    func deleteReflection(_ reflection: Reflection) {
         if let index = self.reflections.firstIndex(where: {reflection.id == $0.id}) {
             self.reflections.remove(at: index)
         }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EntryReflection: View {
-    @State var reflection: ReflectionDev
+    @State var reflection: Reflection
     @State var hAlignment: HorizontalAlignment = .leading
     @State var alignment: Alignment = .leading
     
@@ -56,7 +56,7 @@ struct EntryReflection: View {
 #Preview {
     
     struct Preview: View {
-        var reflection: ReflectionDev = ReflectionDev(text: "Test is really long. Lets think of a long as phrase that is longer than this and how it would look like in the item. It is mererly a reflection.")
+        var reflection: Reflection = Reflection.reflectionPreview
         var body: some View {
             EntryReflection(reflection: reflection)
         }
