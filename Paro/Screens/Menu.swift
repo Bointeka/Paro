@@ -37,8 +37,9 @@ struct MenuView: View {
                             Button {
                                 if (folder.passwordHash != nil && folder.passwordHash!.unlock(password)) {
                                     unlock.toggle()
-                                    path.append(folder)
                                     password = ""
+                                    passwordModel.locked = false
+                                    path.append(folder)
                                 }
                             } label : {
                                 Text("Unlock")
@@ -55,7 +56,14 @@ struct MenuView: View {
                 .navigationDestination(for: FolderDev.self) {
                     folder in
                     Workspace(passwords: $passwordModel, path: $path, selectedFolder: folder )
-                }
+                }.toolbar(content: {
+                    ToolbarItem (placement: .topBarTrailing){
+                        NavigationLink(destination: Search()) {
+                            Icon(iconName: "magnifyingglass", width: 25, height: 25)
+                                .padding(.trailing, 30)
+                        }
+                    }
+                })
             
             HStack {
                 Button {
@@ -64,6 +72,11 @@ struct MenuView: View {
                     Icon(iconName: "folder.fill.badge.plus", width: 50, height: 50)
                 }.padding(.leading, 30)
                 Spacer()
+                if (!passwordModel.locked) {
+                    LockFolders(passwords: $passwordModel, path: $path, selectedFolder: $emptyFolder)
+                }
+                Spacer()
+                Text("Donate").padding(.trailing, 30)
             }
         }.sheet(isPresented: $isVisible) {
             AddFolder(isPresented: $isVisible, folderModel: $folderModel, folder: $emptyFolder, passwords: $passwordModel)

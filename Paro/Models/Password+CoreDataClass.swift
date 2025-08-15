@@ -56,6 +56,12 @@ public class Password: NSManagedObject {
         return false
     }
     
+    func lock() {
+        if (!self.locked_) {
+            self.locked_.toggle()
+        }
+    }
+    
     static func == (lhs: Password, rhs: Password) -> Bool {
         return lhs.hashedPassword == rhs.hashedPassword
     }

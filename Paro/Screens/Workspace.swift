@@ -36,8 +36,10 @@ struct Workspace: View {
                                 Button {
                                     if (folder.passwordHash != nil && folder.passwordHash!.unlock(password)) {
                                         unlock.toggle()
-                                        path.append(folder)
                                         password = ""
+                                        passwords.locked = false
+                                        path.append(folder)
+                                        
                                     }
                                 } label : {
                                     Text("Unlock")
@@ -75,6 +77,10 @@ struct Workspace: View {
                     Icon(iconName: "folder.fill.badge.plus", width: 50, height: 50)
                     
                 }.padding(.leading, 30)
+                Spacer()
+                if (!passwords.locked && selectedFolder.passwordHash != nil) {
+                    LockFolders(passwords: $passwords, path: $path, selectedFolder: $selectedFolder)
+                }
                 Spacer()
                 NavigationLink(destination: NoteEdit(folder: $selectedFolder, note: NoteDev(id: 1))) {
                     Icon(iconName:"square.and.pencil", width: 40, height: 40)

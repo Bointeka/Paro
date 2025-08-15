@@ -10,6 +10,7 @@ import CoreData
 
 @Observable class PasswordModel  {
     var passwords: [Password]
+    var locked: Bool = true
     
     init(passwords: [Password]) {
         self.passwords = passwords
