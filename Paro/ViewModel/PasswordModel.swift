@@ -21,6 +21,7 @@ import CoreData
             throw DataValidationError.duplicatePassword
         } else {
             self.passwords.append(try Password(name: name, password: password, hint: hint, context: context))
+            try context.save()
         }
     }
 }
