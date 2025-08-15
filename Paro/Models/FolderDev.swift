@@ -6,11 +6,12 @@
 //
 
 import Foundation
+import CoreData
 
 @Observable class FolderDev: Equatable, Identifiable, Hashable {
     var id: String {name}
     var name: String
-    var notes : [NoteDev]
+    var notes : [Note]
     var folders : [FolderDev]
     var passwordHash: Password?
     
@@ -33,19 +34,25 @@ import Foundation
         return lhs.name == rhs.name
     }
     
-    func addNote(_ note: NoteDev) {
+    func addNote(_ note: Note) {
+        guard let context = note.managedObjectContext else { return }
         if let _ = self.notes.firstIndex(where: { $0.id == note.id }) {
             //Do nothing since it is already in the array
         } else if (note.title != ""){
-            note.id = notes.count
+            //note.id = notes.count
             self.notes.append(note)
+            do {
+                try context.save()
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
     
-     func deleteNote(_ note: NoteDev) {
-        if let index = self.notes.firstIndex(of: note) {
-            self.notes.remove(at: index)
-        }
+     func deleteNote(_ note: Note) {
+         guard let context = note.managedObjectContext else { return }
+         
+         context.delete(note)
     }
     
     

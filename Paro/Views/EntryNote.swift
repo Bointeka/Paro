@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EntryNote: View {
-    @State var note: NoteDev
+    @ObservedObject var note: Note
     @Binding var folder: FolderDev
     var body: some View {
         NavigationLink(destination: NoteEdit(folder: $folder, note: note)) {
@@ -24,5 +24,5 @@ struct EntryNote: View {
 }
 
 #Preview {
-    EntryNote(note: NoteDev(id: 1, title: "Yes"), folder: .constant(FolderDev()))
+    EntryNote(note: Note.notePreviewHelper, folder: .constant(FolderDev()))
 }

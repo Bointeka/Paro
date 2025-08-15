@@ -11,7 +11,7 @@
         <attribute name="timestamp_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title_" attributeType="String" defaultValueString="New Note" allowsCloudEncryption="YES"/>
         <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="notes" inverseEntity="Folder"/>
-        <relationship name="reflections" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Reflection" inverseName="note" inverseEntity="Reflection"/>
+        <relationship name="reflections_" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Reflection" inverseName="note" inverseEntity="Reflection"/>
     </entity>
     <entity name="Password" representedClassName="Password" syncable="YES">
         <attribute name="hashedPassword_" optional="YES" attributeType="String"/>
@@ -25,6 +25,6 @@
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="text_" optional="YES" attributeType="String" allowsCloudEncryption="YES"/>
         <attribute name="timestamp_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="note" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Note" inverseName="reflections" inverseEntity="Note"/>
+        <relationship name="note" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Note" inverseName="reflections_" inverseEntity="Note"/>
     </entity>
 </model>

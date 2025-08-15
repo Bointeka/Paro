@@ -12,11 +12,12 @@ struct NoteEdit: View {
     @Binding var folder: FolderDev
 
     @Environment(\.dismiss) private var dismiss
-
+    
     @FocusState var focused: Bool
     
-    @State var note: NoteDev
     @State var showReflections: Bool = false
+    
+    @ObservedObject var note: Note
     
     var body: some View {
         NavigationView {
@@ -44,13 +45,13 @@ struct NoteEdit: View {
                 } label: {
                     Text("Reflections")
                 }.sheet(isPresented: $showReflections) {
-                    ReflectionView(note: $note, showReflection: $showReflections)
+                    ReflectionView(note: note, showReflection: $showReflections)
                 }
             }
             
         }.navigationBarBackButtonHidden(true)
          .navigationBarItems(leading: Button {
-                folder.addNote(note)
+             folder.addNote(note)
                 dismiss()
             } label: {
                 Icon(iconName:"chevron.backward", width: 20, height: 20)
@@ -65,7 +66,7 @@ struct NoteEdit: View {
 }
 
 #Preview {
-    NoteEdit(folder: .constant(NoteEdit.testData()), note: NoteDev(id: 1))
+    NoteEdit(folder: .constant(NoteEdit.testData()), note: Note.notePreviewHelper)
 }
 
 

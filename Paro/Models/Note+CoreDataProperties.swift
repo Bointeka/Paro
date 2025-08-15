@@ -20,24 +20,24 @@ extension Note {
     @NSManaged public var timestamp_: Date?
     @NSManaged public var title_: String?
     @NSManaged public var folder: Folders?
-    @NSManaged public var reflections: NSSet?
+    @NSManaged public var reflections_: NSSet?
 
 }
 
 // MARK: Generated accessors for reflections
 extension Note {
 
-    @objc(addReflectionsObject:)
-    @NSManaged public func addToReflections(_ value: Reflection)
+    @objc(addReflections_Object:)
+    @NSManaged public func addToReflections_(_ value: Reflection)
 
-    @objc(removeReflectionsObject:)
-    @NSManaged public func removeFromReflections(_ value: Reflection)
+    @objc(removeReflections_Object:)
+    @NSManaged public func removeFromReflections_(_ value: Reflection)
 
-    @objc(addReflections:)
-    @NSManaged public func addToReflections(_ values: NSSet)
+    @objc(addReflections_:)
+    @NSManaged public func addToReflections_(_ values: NSSet)
 
-    @objc(removeReflections:)
-    @NSManaged public func removeFromReflections(_ values: NSSet)
+    @objc(removeReflections_:)
+    @NSManaged public func removeFromReflections_(_ values: NSSet)
 
 }
 
@@ -54,8 +54,18 @@ extension Note : Identifiable {
         set { title_ = newValue }
     }
     
+    var reflections: Set<Reflection> {
+        get { (reflections_ as? Set<Reflection>) ?? []}
+        set { reflections_ = newValue as NSSet }
+    }
+    
     public override func awakeFromInsert() {
         self.timestamp_ = Date()
     }
     
+    // MARK: Preview helper
+    static var notePreviewHelper: Note {
+        let context = PersistenceController.preview.container.viewContext
+        return Note(context: context)
+    }
 }

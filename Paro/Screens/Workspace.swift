@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct Workspace: View {
+    @Environment(\.managedObjectContext) var context
+    
     @Binding var passwords: PasswordModel
     @Binding var path: NavigationPath
     
@@ -82,7 +84,7 @@ struct Workspace: View {
                     LockFolders(passwords: $passwords, path: $path, selectedFolder: $selectedFolder)
                 }
                 Spacer()
-                NavigationLink(destination: NoteEdit(folder: $selectedFolder, note: NoteDev(id: 1))) {
+                NavigationLink(destination: NoteEdit(folder: $selectedFolder, note: Note(context: context))) {
                     Icon(iconName:"square.and.pencil", width: 40, height: 40)
                 }.padding(.trailing, 30)
             }.sheet(isPresented: $isVisible) {
@@ -98,7 +100,7 @@ struct Workspace: View {
         @State var folder: FolderDev = Workspace.testDataFolder()
         @State var path: NavigationPath = NavigationPath()
         var body: some View {
-            Workspace(passwords: $passwords, path: $path, selectedFolder: folder)
+            Workspace(passwords: $passwords, path: $path, selectedFolder: folder).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         }
     }
     return WorkspacePreview()

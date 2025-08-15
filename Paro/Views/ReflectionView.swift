@@ -10,10 +10,9 @@ import SwiftUI
 struct ReflectionView: View {
     @Environment(\.managedObjectContext) var context
     
-    @Binding var note: NoteDev
+    @ObservedObject var note: Note
     @Binding var showReflection: Bool
     
-    @State var reflection: ReflectionDev = ReflectionDev()
     @State var text: String = ""
     
     var body: some View {
@@ -28,7 +27,7 @@ struct ReflectionView: View {
                     Spacer()
                     Button {
                         note.addReflection(text, context: context)
-                        reflection = ReflectionDev()
+                        text = ""
                     } label: {
                         Text("Save")
                     }.padding(.horizontal, geo.size.width * 0.05)
@@ -43,7 +42,7 @@ struct ReflectionView: View {
                 Section("Reflections", content: {
                     ScrollView {
                         LazyVStack ( spacing: 30) {
-                            ForEach(note.reflections, id: \.self.id) { reflection in
+                            ForEach(Array(note.reflections), id: \.self.id) { reflection in
                                 if (reflection.isEven()) {
                                     EntryReflection(reflection: reflection, hAlignment: .trailing, alignment: .trailing, ).swipeActions (edge: .trailing){
                                         Button(role: .destructive) {
@@ -74,10 +73,11 @@ struct ReflectionView: View {
 
 #Preview {
     struct ReflectionPreview: View {
-        @State var note: NoteDev = NoteDev(id: 0)
+        @State var note: Note = Note.notePreviewHelper
         @State var showReflection: Bool = true
         var body: some View {
-            ReflectionView(note: $note, showReflection: $showReflection)
+            ReflectionView(note: note, showReflection: $showReflection)
+                .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
         }
     }
     

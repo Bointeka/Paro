@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NoteSwipe: View {
     @Binding var folder: FolderDev
-    @State var note: NoteDev
+    @ObservedObject var note: Note
     var body: some View {
         Button(role: .destructive) {
             folder.deleteNote(note)
@@ -25,5 +25,5 @@ struct NoteSwipe: View {
 }
 
 #Preview {
-    NoteSwipe(folder: .constant(FolderDev(name: "Test", passwordHash: nil)), note: NoteDev(id: 1, title: "TEST"))
+    NoteSwipe(folder: .constant(FolderDev(name: "Test", passwordHash: nil)), note: Note.notePreviewHelper)
 }

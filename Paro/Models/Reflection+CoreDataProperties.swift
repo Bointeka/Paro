@@ -34,7 +34,7 @@ extension Reflection : Identifiable {
     
     convenience init(id: Int64, text: String, context: NSManagedObjectContext) {
         self.init(context: context)
-        self.id = 0
+        self.id = id
         self.text = text
     }
     
