@@ -9,9 +9,9 @@ import SwiftUI
 
 struct EntryNote: View {
     @ObservedObject var note: Note
-    @Binding var folder: FolderDev
+    @ObservedObject var folder: Folders
     var body: some View {
-        NavigationLink(destination: NoteEdit(folder: $folder, note: note)) {
+        NavigationLink(destination: NoteEdit(folder: folder, note: note)) {
             VStack {
                 Text(note.title)
                 Text(note.getTimestamp())
@@ -24,5 +24,5 @@ struct EntryNote: View {
 }
 
 #Preview {
-    EntryNote(note: Note.notePreviewHelper, folder: .constant(FolderDev()))
+    EntryNote(note: Note.notePreviewHelper, folder: Folders.folderPreviewHelper)
 }

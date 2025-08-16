@@ -10,6 +10,8 @@ import CoreData
 
 struct MenuView: View {
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.managedObjectContext) var context
+    
     @State var folderModel: FolderModel = FolderModel(folders: [])
     @State var passwordModel: PasswordModel = PasswordModel(passwords: [])
     @State var isVisible: Bool = false
@@ -17,13 +19,13 @@ struct MenuView: View {
     @State var searchBar: Bool = false
     @State var path: NavigationPath = NavigationPath()
     @State var searchText: String = ""
-    @State var emptyFolder: FolderDev = FolderDev(name: "nil", passwordHash: nil)
+    @State var emptyFolder: Folders
     @State var unlock: Bool = false
     @State var password: String = ""
     var body: some View {
         NavigationStack (path: $path){
-            List($folderModel.folders) { $folder in
-                EntryFolder(folder: $folder)
+            List(folderModel.folders) { folder in
+                EntryFolder(folder: folder)
                     .onTapGesture {
                         if (folder.passwordHash != nil && folder.passwordHash!.locked_){
                             unlock.toggle()
@@ -53,7 +55,7 @@ struct MenuView: View {
                     }
             }
                 .navigationTitle("Folders")
-                .navigationDestination(for: FolderDev.self) {
+                .navigationDestination(for: Folders.self) {
                     folder in
                     Workspace(passwords: $passwordModel, path: $path, selectedFolder: folder )
                 }.toolbar(content: {
@@ -73,20 +75,22 @@ struct MenuView: View {
                 }.padding(.leading, 30)
                 Spacer()
                 if (!passwordModel.locked) {
-                    LockFolders(passwords: $passwordModel, path: $path, selectedFolder: $emptyFolder)
+                    LockFolders(passwords: $passwordModel, path: $path, selectedFolder: emptyFolder)
                 }
                 Spacer()
                 Text("Donate").padding(.trailing, 30)
             }
         }.sheet(isPresented: $isVisible) {
-            AddFolder(isPresented: $isVisible, folderModel: $folderModel, folder: $emptyFolder, passwords: $passwordModel)
+            AddFolder(isPresented: $isVisible, folderModel: $folderModel, folder: emptyFolder, passwords: $passwordModel)
+        }.onAppear {
+            emptyFolder = Folders(name: "nil", context: context)
         }
     }
 }
 
 
 #Preview {
-    MenuView(folderModel: MenuView.testData(), passwordModel: Password.createPasswordModelHelper).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    MenuView(folderModel: MenuView.testData(), passwordModel: Password.createPasswordModelHelper, emptyFolder: Folders.folderPreviewHelper).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
 }
 
 extension MenuView {

@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct NoteEdit: View {
-    @Binding var folder: FolderDev
+    @ObservedObject var folder: Folders
 
     @Environment(\.dismiss) private var dismiss
     
@@ -51,8 +51,12 @@ struct NoteEdit: View {
             
         }.navigationBarBackButtonHidden(true)
          .navigationBarItems(leading: Button {
-             folder.addNote(note)
-                dismiss()
+             do {
+                 try folder.addNote(note)
+                 dismiss()
+             } catch {
+                 //TODO: Add error when saving fails.
+             }
             } label: {
                 Icon(iconName:"chevron.backward", width: 20, height: 20)
                 Text("Back").foregroundColor(.paleAqua)
@@ -66,20 +70,6 @@ struct NoteEdit: View {
 }
 
 #Preview {
-    NoteEdit(folder: .constant(NoteEdit.testData()), note: Note.notePreviewHelper)
+    NoteEdit(folder: Folders.folderPreviewHelper, note: Note.notePreviewHelper)
 }
 
-
-extension NoteEdit {
-    static func testData() -> FolderDev{
-        let context = PersistenceController.preview.container.viewContext
-        var password: Password?
-        do {
-            password = try Password(name: "test", password: "test", hint: "test", context: context)
-        } catch {
-            print(error)
-            password = nil
-        }
-        return FolderDev(name: "test", passwordHash: password)
-    }
-}

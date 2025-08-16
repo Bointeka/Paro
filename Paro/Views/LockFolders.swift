@@ -10,7 +10,7 @@ import SwiftUI
 struct LockFolders: View {
     @Binding var passwords: PasswordModel
     @Binding var path: NavigationPath
-    @Binding var selectedFolder: FolderDev
+    @ObservedObject var selectedFolder: Folders
     
     var body: some View {
         HStack {
@@ -31,5 +31,5 @@ struct LockFolders: View {
 }
 
 #Preview {
-    LockFolders(passwords: .constant(PasswordModel(passwords: [])), path: .constant(NavigationPath()), selectedFolder: .constant(FolderDev(name: "", passwordHash: nil)))
+    LockFolders(passwords: .constant(PasswordModel(passwords: [])), path: .constant(NavigationPath()), selectedFolder: Folders.folderPreviewHelper)
 }

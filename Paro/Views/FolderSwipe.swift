@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct FolderSwipe: View {
-    @Binding var selectedFolder: FolderDev
-    @State var folder: FolderDev
+    @ObservedObject var selectedFolder: Folders
+    @State var folder: Folders
     var body: some View {
         Button(role: .destructive) {
-            selectedFolder.deleteFolder(folder)
+            if (selectedFolder.folders.isEmpty && selectedFolder.notes.isEmpty) {
+                selectedFolder.deleteFolder(folder)
+            }
         } label: {
             Label("Delete", systemImage: "trash")
         }
@@ -20,9 +22,10 @@ struct FolderSwipe: View {
             //TODO: Implement move folder
         } label: {
             Label("Move", systemImage: "folder.fill")
-        }    }
+        }
+    }
 }
 
 #Preview {
-    FolderSwipe(selectedFolder: .constant(FolderDev(name: "test", passwordHash: nil)), folder: FolderDev(name:"test", passwordHash: nil))
+    FolderSwipe(selectedFolder: Folders.folderPreviewHelper, folder: Folders.folderPreviewHelper)
 }

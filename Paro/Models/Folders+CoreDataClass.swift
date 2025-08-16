@@ -16,42 +16,38 @@ public class Folders: NSManagedObject {
         return lhs.name == rhs.name
     }
     
-    /*
-    func addNote(_ note: Note) {
-        
-        if let _ = self.notes.firstIndex(where: { $0.id == note.id }) {
-            //Do nothing since it is already in the array
-        } else if (note.title != ""){
-            note.id = notes.count
-            self.notes.append(note)
+    
+    func addNote(_ note: Note) throws {
+        guard let context = note.managedObjectContext else { return }
+        if (note.title != ""){
+            addToNotes_(note)
+            try context.save()
         }
     }
     
-     func deleteNote(_ note: NoteDev) {
-        if let index = self.notes.firstIndex(of: note) {
-            self.notes.remove(at: index)
-        }
+    func deleteNote(_ note: Note) {
+        guard let context = note.managedObjectContext else { return }
+        context.delete(note)
     }
     
     
-     func addFolder(_ folder: FolderDev) throws {
-        if let _ = self.folders.firstIndex(of: folder) {
-            throw DataValidationError.duplicateFolder
-        } else if folder.name == ""{
+    func addFolder(_ folder: Folders) throws {
+        guard let context = folder.managedObjectContext else { return }
+        if folder.name == "nil"{
             throw DataValidationError.invalidName
         } else {
-            self.folders.append(folder)
+            addToFolders_(folder)
+            try context.save()
         }
     }
-    
-     func deleteFolder(_ folder: FolderDev) {
-        if let index = self.folders.firstIndex(of: folder) {
-            self.folders.remove(at: index)
-        }
+
+    func deleteFolder(_ folder: Folders) {
+        guard let context = folder.managedObjectContext else { return }
+        context.delete(folder)
     }
     
     func getNoteCount() -> Int {
         return notes.count
-    }*/
+    }
     
 }

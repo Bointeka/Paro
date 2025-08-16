@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct EntryFolder: View {
-    @Binding var folder: FolderDev
-    @State var unlock: Bool = false
-    @State var folderCheck: Bool = true
+    @ObservedObject var folder: Folders
     var body: some View {
         HStack {
             Text(folder.name)
@@ -25,22 +23,7 @@ struct EntryFolder: View {
 }
 
 #Preview {
-    
-    EntryFolder(folder: .constant(EntryFolder.testData()))
-}
-
-extension EntryFolder {
-    static func testData() -> FolderDev{
-        let context = PersistenceController.preview.container.viewContext
-        var password: Password?
-        do {
-            password = try Password(name: "test", password: "test", hint: "test", context: context)
-        } catch {
-            print(error)
-            password = nil
-        }
-        return FolderDev(name: "test", passwordHash: password)
-    }
+    EntryFolder(folder: Folders.folderPreviewHelper)
 }
 
 

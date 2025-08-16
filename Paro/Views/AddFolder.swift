@@ -9,9 +9,11 @@ import SwiftUI
 
 struct AddFolder: View {
     
+    @Environment(\.managedObjectContext) var context
+    
     @Binding var isPresented: Bool
     @Binding var folderModel: FolderModel
-    @Binding var folder: FolderDev
+    @ObservedObject var folder: Folders
     @Binding var passwords: PasswordModel
     
     @FocusState var focused: Bool
@@ -35,7 +37,7 @@ struct AddFolder: View {
                     Button {
                         if (folder.name != "nil") {
                             do {
-                                try folder.addFolder(FolderDev(name: folderName, passwordHash: selectedPassword))
+                                try folder.addFolder(Folders(name: folderName, passwordHash: selectedPassword, context: context))
                                 isPresented.toggle()
                             } catch {
                                 alertMessage = error.localizedDescription
@@ -43,7 +45,7 @@ struct AddFolder: View {
                             }
                         } else {
                             do {
-                                try folderModel.addFolder(FolderDev(name: folderName, passwordHash: selectedPassword))
+                                try folderModel.addFolder(Folders(name: folderName, passwordHash: selectedPassword, context: context), context: context)
                                 isPresented.toggle()
                             } catch {
                                 alertMessage = error.localizedDescription
@@ -105,10 +107,10 @@ struct AddFolder: View {
     struct Preview: View {
         @State var password: PasswordModel = AddFolder.testData()
         var body: some View {
-            AddFolder(isPresented: .constant(true as Bool), folderModel: .constant(FolderModel(folders:[])), folder: .constant(FolderDev()), passwords: $password)
+            AddFolder(isPresented: .constant(true as Bool), folderModel: .constant(Folders.previewFolderModel), folder: Folders.folderPreviewHelper, passwords: $password)
         }
     }
-    return Preview()
+    return Preview().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     
 }
 

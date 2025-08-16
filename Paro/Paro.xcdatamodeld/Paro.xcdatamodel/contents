@@ -2,15 +2,16 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24G84" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
     <entity name="Folder" representedClassName="Folders" syncable="YES">
         <attribute name="name_" optional="YES" attributeType="String"/>
-        <relationship name="folders" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="folders" inverseEntity="Folder"/>
-        <relationship name="notes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="folder" inverseEntity="Note"/>
+        <attribute name="root" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <relationship name="folders_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="folders_" inverseEntity="Folder"/>
+        <relationship name="notes_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="folder" inverseEntity="Note"/>
         <relationship name="passwordHash" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Password" inverseName="folder" inverseEntity="Password"/>
     </entity>
     <entity name="Note" representedClassName="Note" syncable="YES">
         <attribute name="text_" optional="YES" attributeType="String" allowsCloudEncryption="YES"/>
         <attribute name="timestamp_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title_" attributeType="String" defaultValueString="New Note" allowsCloudEncryption="YES"/>
-        <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="notes" inverseEntity="Folder"/>
+        <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="notes_" inverseEntity="Folder"/>
         <relationship name="reflections_" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Reflection" inverseName="note" inverseEntity="Reflection"/>
     </entity>
     <entity name="Password" representedClassName="Password" syncable="YES">

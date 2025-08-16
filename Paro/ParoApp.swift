@@ -12,10 +12,11 @@ struct ParoApp: App {
     
     let persistenceController = PersistenceController.shared
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    let emptyFolder: Folders = Folders(entity: Folders.entity(), insertInto: nil)
     
     var body: some Scene {
         WindowGroup {
-            MenuView()
+            MenuView(emptyFolder: emptyFolder)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
