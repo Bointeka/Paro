@@ -82,15 +82,22 @@ struct MenuView: View {
             }
         }.sheet(isPresented: $isVisible) {
             AddFolder(isPresented: $isVisible, folderModel: $folderModel, folder: emptyFolder, passwords: $passwordModel)
-        }.onAppear {
-            emptyFolder = Folders(name: "nil", context: context)
         }
     }
 }
 
 
 #Preview {
-    MenuView(folderModel: MenuView.testData(), passwordModel: Password.createPasswordModelHelper, emptyFolder: Folders.folderPreviewHelper).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    
+    struct MenuViewPreview: View {
+        @ObservedObject var emptyFolder: Folders = Folders(entity: Folders.entity(), insertInto: nil)
+        var body: some View {
+            MenuView(folderModel: MenuView.testData(), passwordModel: Password.createPasswordModelHelper, emptyFolder: emptyFolder)
+        }
+    }
+    return MenuViewPreview().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    
+    
 }
 
 extension MenuView {

@@ -21,6 +21,7 @@ extension Folders {
     @NSManaged public var folders_: NSSet?
     @NSManaged public var notes_: NSSet?
     @NSManaged public var passwordHash: Password?
+    @NSManaged public var folder: Folders?
 
 }
 

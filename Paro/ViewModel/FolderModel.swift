@@ -21,6 +21,7 @@ import CoreData
             throw DataValidationError.duplicateFolder
         } else {
             self.folders.append(folder)
+            folder.folder = nil
             do {
                 try context.save()
             } catch {

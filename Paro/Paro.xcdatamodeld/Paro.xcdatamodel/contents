@@ -3,7 +3,8 @@
     <entity name="Folder" representedClassName="Folders" syncable="YES">
         <attribute name="name_" optional="YES" attributeType="String"/>
         <attribute name="root" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <relationship name="folders_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="folders_" inverseEntity="Folder"/>
+        <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="folders_" inverseEntity="Folder"/>
+        <relationship name="folders_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="folder" inverseEntity="Folder"/>
         <relationship name="notes_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Note" inverseName="folder" inverseEntity="Note"/>
         <relationship name="passwordHash" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Password" inverseName="folder" inverseEntity="Password"/>
     </entity>
