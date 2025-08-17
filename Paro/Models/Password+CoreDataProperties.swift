@@ -48,6 +48,15 @@ extension Password : Identifiable {
         self.locked_ = true
     }
     
+    static func fetchPasswords(context: NSManagedObjectContext) -> PasswordModel {
+        let request: NSFetchRequest<Password> = Password.fetchRequest()
+        request.predicate = nil
+        request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        
+        return PasswordModel(passwords: try! context.fetch(request))
+        
+    }
+    
     // MARK: Preview helpers
     var previewPasswords: [Password] {
         let context = PersistenceController.preview.container.viewContext

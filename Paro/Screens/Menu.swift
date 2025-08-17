@@ -82,6 +82,9 @@ struct MenuView: View {
             }
         }.sheet(isPresented: $isVisible) {
             AddFolder(isPresented: $isVisible, folderModel: $folderModel, folder: emptyFolder, passwords: $passwordModel)
+        }.onAppear() {
+            folderModel = Folders.fetchRootFolders(context: context)
+            passwordModel = Password.fetchPasswords(context: context)
         }
     }
 }

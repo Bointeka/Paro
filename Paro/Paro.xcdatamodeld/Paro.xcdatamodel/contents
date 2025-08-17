@@ -11,7 +11,7 @@
     <entity name="Note" representedClassName="Note" syncable="YES">
         <attribute name="text_" optional="YES" attributeType="String" allowsCloudEncryption="YES"/>
         <attribute name="timestamp_" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="title_" attributeType="String" defaultValueString="New Note" allowsCloudEncryption="YES"/>
+        <attribute name="title_" optional="YES" attributeType="String" allowsCloudEncryption="YES"/>
         <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="notes_" inverseEntity="Folder"/>
         <relationship name="reflections_" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Reflection" inverseName="note" inverseEntity="Reflection"/>
     </entity>

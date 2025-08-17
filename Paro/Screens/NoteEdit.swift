@@ -9,15 +9,20 @@
 import SwiftUI
 
 struct NoteEdit: View {
+    enum Field {
+        case title, text
+    }
     @ObservedObject var folder: Folders
 
     @Environment(\.dismiss) private var dismiss
     
-    @FocusState var focused: Bool
+    @FocusState var focused: Field?
     
     @State var showReflections: Bool = false
     
     @ObservedObject var note: Note
+    
+    
     
     var body: some View {
         NavigationView {
@@ -29,7 +34,10 @@ struct NoteEdit: View {
                         .overlay(RoundedRectangle(cornerRadius: 10).stroke())
                         .padding(EdgeInsets(top: 5, leading: 10, bottom: 10, trailing: 10))
                         .contentShape(Rectangle())
-                        .focused($focused)
+                        .focused($focused, equals: .title)
+                        .onSubmit {
+                            focused = .text
+                        }
                     
                 }.cornerRadius(10)
                    // .background(.grassGreen)
@@ -38,6 +46,7 @@ struct NoteEdit: View {
                            maxHeight: UIScreen.main.bounds.height * 0.75)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
+                    .focused($focused, equals: .text)
                     
                 
                 Button{
@@ -59,9 +68,14 @@ struct NoteEdit: View {
              }
             } label: {
                 Icon(iconName:"chevron.backward", width: 20, height: 20)
-                Text("Back").foregroundColor(.paleAqua)
+                Text("Save").foregroundColor(.paleAqua)
             }).onAppear {
-             focused = true
+                if (note.title == "") {
+                    focused = .title
+                } else {
+                    focused = .text
+                }
+                
          }
         
         

@@ -50,4 +50,21 @@ public class Folders: NSManagedObject {
         return notes.count
     }
     
+    static func fetchRootFolders(context: NSManagedObjectContext) -> FolderModel {
+        let request:NSFetchRequest<Folders> = Folders.fetchRequest()
+        request.predicate = NSPredicate(format: "folder == nil")
+        request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        let folders = try! context.fetch(request)
+        let folderModel = FolderModel(folders: folders)
+        return folderModel
+    }
+    
+    func fetchSubFolders() {
+        
+    }
+    
+    func fetchNotes() {
+        
+    }
 }
+
