@@ -62,6 +62,7 @@ struct AddFolder: View {
                         }
                 }.padding(.vertical, 10)
                 TextField("Folder Name", text: $folderName)
+                    .autocorrectionDisabled()
                     .frame(width: UIScreen.main.bounds.width - 50, height: 50)
                     .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10))
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke())
