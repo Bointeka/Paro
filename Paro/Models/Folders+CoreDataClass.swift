@@ -59,12 +59,19 @@ public class Folders: NSManagedObject {
         return folderModel
     }
     
-    func fetchSubFolders() {
+    static func searchFolders(context: NSManagedObjectContext, search: String) -> [Folders] {
+            let request:NSFetchRequest<Folders> = Folders.fetchRequest()
+            request.predicate = NSPredicate(format: "name_ CONTAINS[cd] %@", search)
+            request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+            return try! context.fetch(request)
         
     }
     
-    func fetchNotes() {
-        
+    static func fetchSubFolders(context: NSManagedObjectContext, folder: Folders) -> [Folders] {
+        let request:NSFetchRequest<Folders> = Folders.fetchRequest()
+        request.predicate = NSPredicate(format: "folder_ == %@", folder)
+        request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        return try! context.fetch(request)
     }
 }
 

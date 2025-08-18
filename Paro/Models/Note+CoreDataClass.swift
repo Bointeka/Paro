@@ -39,4 +39,8 @@ public class Note: NSManagedObject {
         return lhs.id == rhs.id
     }
     
+    func fetchNotes(search: String) {
+        
+    }
+    
 }
