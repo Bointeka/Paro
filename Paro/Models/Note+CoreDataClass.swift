@@ -39,8 +39,18 @@ public class Note: NSManagedObject {
         return lhs.id == rhs.id
     }
     
-    func fetchNotes(search: String) {
-        
+    static func searchNotes(context: NSManagedObjectContext, search: String) -> [Note] {
+        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        request.predicate = NSPredicate(format: "title_ CONTAINS[cd] %@ OR text_ CONTAINS[cd] %@", search, search)
+        request.sortDescriptors = [NSSortDescriptor(key: "title_", ascending: true), NSSortDescriptor(key: "timestamp_", ascending: false)]
+        return try! context.fetch(request)
+    }
+    
+    static func fetchNotes(context: NSManagedObjectContext, folder: Folders) -> [Note] {
+        let request:NSFetchRequest<Note> = Note.fetchRequest()
+        request.predicate = NSPredicate(format: "folder == %@", folder)
+        request.sortDescriptors = [NSSortDescriptor(key: "timestamp_", ascending: false)]
+        return try! context.fetch(request)
     }
     
 }

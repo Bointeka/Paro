@@ -23,6 +23,7 @@ struct AddFolder: View {
     @State var lock = false
     @State var createPassword = false
     @State var alertMessage: String = ""
+    @Binding var folders:[Folders]
     
     var body: some View {
         GeometryReader {geo in
@@ -37,7 +38,11 @@ struct AddFolder: View {
                     Button {
                         if (folder.name != "nil") {
                             do {
-                                try folder.addFolder(Folders(name: folderName, passwordHash: selectedPassword, context: context))
+                                print(folders)
+                                let newFolder = Folders(name: folderName, passwordHash: selectedPassword, context: context)
+                                try folder.addFolder(newFolder)
+                                folders.append(newFolder)
+                                print(folders)
                                 isPresented.toggle()
                             } catch {
                                 alertMessage = error.localizedDescription
@@ -106,19 +111,12 @@ struct AddFolder: View {
 #Preview {
     
     struct Preview: View {
-        @State var password: PasswordModel = AddFolder.testData()
+        @State var password: PasswordModel = Password.createPasswordModelHelper
+        @State var folders: [Folders] = []
         var body: some View {
-            AddFolder(isPresented: .constant(true as Bool), folderModel: .constant(Folders.previewFolderModel), folder: Folders.folderPreviewHelper, passwords: $password)
+            AddFolder(isPresented: .constant(true as Bool), folderModel: .constant(Folders.previewFolderModel), folder: Folders.folderPreviewHelper, passwords: $password, folders: $folders)
         }
     }
     return Preview().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     
-}
-
-extension AddFolder {
-    static func testData() -> PasswordModel {
-        
-        
-        return Password.createPasswordModelHelper
-    }
 }

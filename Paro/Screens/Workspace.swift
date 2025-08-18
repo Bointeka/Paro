@@ -18,13 +18,15 @@ struct Workspace: View {
     @State var unlock: Bool = false
     @State var password: String = ""
     @State var blankModel: FolderModel = FolderModel(folders: [])
+    @State var folders: [Folders] = []
+    @State var notes: [Note] = []
     
     var body: some View {
         List {
-            Section(header: Text("Folders")) {
-                ForEach(Array(selectedFolder.folders), id: \.self.name) { folder in
+           Section(header: Text("Folders")) {
+                ForEach(folders, id: \.self.index) { folder in
                     EntryFolder(folder: folder).swipeActions (edge: .trailing){
-                        FolderSwipe(selectedFolder: selectedFolder, folder: folder)
+                        FolderSwipe(selectedFolder: selectedFolder, folder: folder, folders: $folders)
                     }.onTapGesture {
                         if (folder.passwordHash != nil && folder.passwordHash!.locked_){
                             unlock.toggle()
@@ -56,8 +58,8 @@ struct Workspace: View {
                 }
             }
             Section(header: Text("Notes")) {
-                ForEach(Array(selectedFolder.notes), id: \.self.timestamp) { note in
-                    EntryNote(note: note,folder: selectedFolder).swipeActions(edge: .trailing) {
+                ForEach(notes, id: \.self.timestamp) { note in
+                    EntryNote(note: note,folder: selectedFolder, notes: $notes).swipeActions(edge: .trailing) {
                         NoteSwipe(folder: selectedFolder, note: note)
                     }
                 }
@@ -71,7 +73,10 @@ struct Workspace: View {
                         .padding(.trailing, 30)
                 }
             }
-        })
+        }).onAppear() {
+            folders = Folders.fetchSubFolders(context: context, folder: selectedFolder)
+            notes = Note.fetchNotes(context: context, folder: selectedFolder)
+        }
         HStack {
             Button {
                 isVisible.toggle()
@@ -84,11 +89,11 @@ struct Workspace: View {
                 LockFolders(passwords: $passwords, path: $path, selectedFolder: selectedFolder)
             }
             Spacer()
-            NavigationLink(destination: NoteEdit(folder: selectedFolder, note: Note(context: context))) {
+            NavigationLink(destination: NoteEdit(folder: selectedFolder, note: Note(context: context), notes: $notes)) {
                 Icon(iconName:"square.and.pencil", width: 40, height: 40)
             }.padding(.trailing, 30)
         }.sheet(isPresented: $isVisible) {
-            AddFolder(isPresented: $isVisible, folderModel: $blankModel, folder: selectedFolder, passwords: $passwords)
+            AddFolder(isPresented: $isVisible, folderModel: $blankModel, folder: selectedFolder, passwords: $passwords, folders: $folders)
         }
     }
 }

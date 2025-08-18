@@ -22,6 +22,7 @@ import CoreData
         } else {
             self.folders.append(folder)
             folder.folder = nil
+            folder.index = Int64(folders.count)
             do {
                 try context.save()
             } catch {

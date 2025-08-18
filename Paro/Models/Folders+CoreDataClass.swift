@@ -36,6 +36,7 @@ public class Folders: NSManagedObject {
         if folder.name == "nil"{
             throw DataValidationError.invalidName
         } else {
+            folder.index = Int64(folders.count)
             addToFolders_(folder)
             try context.save()
         }
@@ -53,7 +54,7 @@ public class Folders: NSManagedObject {
     static func fetchRootFolders(context: NSManagedObjectContext) -> FolderModel {
         let request:NSFetchRequest<Folders> = Folders.fetchRequest()
         request.predicate = NSPredicate(format: "folder == nil")
-        request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
         let folders = try! context.fetch(request)
         let folderModel = FolderModel(folders: folders)
         return folderModel
@@ -64,13 +65,12 @@ public class Folders: NSManagedObject {
             request.predicate = NSPredicate(format: "name_ CONTAINS[cd] %@", search)
             request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
             return try! context.fetch(request)
-        
     }
     
     static func fetchSubFolders(context: NSManagedObjectContext, folder: Folders) -> [Folders] {
         let request:NSFetchRequest<Folders> = Folders.fetchRequest()
-        request.predicate = NSPredicate(format: "folder_ == %@", folder)
-        request.sortDescriptors = [NSSortDescriptor(key: "name_", ascending: true)]
+        request.predicate = NSPredicate(format: "folder == %@", folder)
+        request.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
         return try! context.fetch(request)
     }
 }

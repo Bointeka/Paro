@@ -22,6 +22,8 @@ struct NoteEdit: View {
     
     @ObservedObject var note: Note
     
+    @Binding var notes: [Note]
+    
     
     
     var body: some View {
@@ -63,6 +65,7 @@ struct NoteEdit: View {
          .navigationBarItems(leading: Button {
              do {
                  try folder.addNote(note)
+                 notes.append(note)
                  dismiss()
              } catch {
                  //TODO: Add error when saving fails.
@@ -85,6 +88,6 @@ struct NoteEdit: View {
 }
 
 #Preview {
-    NoteEdit(folder: Folders.folderPreviewHelper, note: Note.notePreviewHelper)
+    NoteEdit(folder: Folders.folderPreviewHelper, note: Note.notePreviewHelper, notes: .constant([]))
 }
 

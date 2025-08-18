@@ -23,7 +23,7 @@ struct Search: View {
                 }
                 Section("Notes") {
                     ForEach(notes, id: \.self.timestamp) { note in
-                        EntryNote(note: note, folder: note.folder ?? Folders(name: "empty", context: context)).transition(.opacity)
+                        EntryNote(note: note, folder: note.folder ?? Folders(name: "empty", context: context), notes: .constant([])).transition(.opacity)
                     }
                 }
             }

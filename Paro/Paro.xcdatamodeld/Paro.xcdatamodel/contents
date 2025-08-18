@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24G84" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
     <entity name="Folder" representedClassName="Folders" syncable="YES">
-        <attribute name="name_" optional="YES" attributeType="String"/>
+        <attribute name="index" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name_" optional="YES" attributeType="String" allowsCloudEncryption="YES"/>
         <attribute name="root" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="folders_" inverseEntity="Folder"/>
         <relationship name="folders_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="folder" inverseEntity="Folder"/>
@@ -16,11 +17,11 @@
         <relationship name="reflections_" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Reflection" inverseName="note" inverseEntity="Reflection"/>
     </entity>
     <entity name="Password" representedClassName="Password" syncable="YES">
-        <attribute name="hashedPassword_" optional="YES" attributeType="String"/>
-        <attribute name="hint_" optional="YES" attributeType="String"/>
+        <attribute name="hashedPassword_" optional="YES" attributeType="String" allowsCloudEncryption="YES"/>
+        <attribute name="hint_" optional="YES" attributeType="String" allowsCloudEncryption="YES"/>
         <attribute name="locked_" optional="YES" transient="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
-        <attribute name="salt_" optional="YES" attributeType="String"/>
+        <attribute name="salt_" optional="YES" attributeType="String" allowsCloudEncryption="YES"/>
         <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="passwordHash" inverseEntity="Folder"/>
     </entity>
     <entity name="Reflection" representedClassName="Reflection" syncable="YES">

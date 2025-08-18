@@ -81,7 +81,7 @@ struct MenuView: View {
                 Text("Donate").padding(.trailing, 30)
             }
         }.sheet(isPresented: $isVisible) {
-            AddFolder(isPresented: $isVisible, folderModel: $folderModel, folder: emptyFolder, passwords: $passwordModel)
+            AddFolder(isPresented: $isVisible, folderModel: $folderModel, folder: emptyFolder, passwords: $passwordModel, folders: .constant([]))
         }.onAppear() {
             folderModel = Folders.fetchRootFolders(context: context)
             passwordModel = Password.fetchPasswords(context: context)

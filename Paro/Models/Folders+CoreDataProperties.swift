@@ -17,6 +17,7 @@ extension Folders {
     }
 
     @NSManaged public var name_: String?
+    @NSManaged public var index: Int64
     @NSManaged public var root: Bool
     @NSManaged public var folders_: NSSet?
     @NSManaged public var notes_: NSSet?
