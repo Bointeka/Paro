@@ -86,7 +86,7 @@ struct MenuView: View {
                     Workspace(passwords: $passwordModel, path: $path, selectedFolder: folder )
                 }.toolbar(content: {
                     ToolbarItem (placement: .topBarTrailing){
-                        NavigationLink(destination: Search()) {
+                        NavigationLink(destination: Search(passwords: $passwordModel, path: $path)) {
                             Icon(iconName: "magnifyingglass", width: 25, height: 25)
                                 .padding(.trailing, 30)
                         }

@@ -37,7 +37,7 @@ struct Workspace: View {
                         }
                         
                     }.alert("Unlock folder", isPresented: $unlock) {
-                        SecureField("Password", text: $password)
+                        SecureField("Password", text: $password).textInputAutocapitalization(.never)
                         HStack {
                             Button {
                                 if (folder.passwordHash != nil && folder.passwordHash!.unlock(password)) {
@@ -70,7 +70,7 @@ struct Workspace: View {
             Workspace(passwords: $passwords, path: $path, selectedFolder: folder)
         }.toolbar(content: {
             ToolbarItem (placement: .topBarTrailing){
-                NavigationLink(destination: Search()) {
+                NavigationLink(destination: Search(passwords: $passwords, path: $path)) {
                     Icon(iconName: "magnifyingglass", width: 25, height: 25)
                         .padding(.trailing, 30)
                 }

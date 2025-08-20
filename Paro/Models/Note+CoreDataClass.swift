@@ -41,7 +41,7 @@ public class Note: NSManagedObject {
     
     static func searchNotes(context: NSManagedObjectContext, search: String) -> [Note] {
         let request:NSFetchRequest<Note> = Note.fetchRequest()
-        request.predicate = NSPredicate(format: "title_ CONTAINS[cd] %@ OR text_ CONTAINS[cd] %@", search, search)
+        request.predicate = NSPredicate(format: "(title_ CONTAINS[cd] %@ OR text_ CONTAINS[cd] %@) AND folder.passwordHash == nil", search, search)
         request.sortDescriptors = [NSSortDescriptor(key: "title_", ascending: true), NSSortDescriptor(key: "timestamp_", ascending: false)]
         return try! context.fetch(request)
     }
