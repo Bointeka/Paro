@@ -22,11 +22,37 @@ struct MenuView: View {
     @State var emptyFolder: Folders
     @State var unlock: Bool = false
     @State var password: String = ""
+    @State var selectedSubFolder: Folders? = nil
+    @State var isDeleteDialogPresented: Bool = false
+    
     var body: some View {
         NavigationStack (path: $path){
-            List(folderModel.folders) { folder in
-                EntryFolder(folder: folder)
-                    .onTapGesture {
+            List(folderModel.folders, id: \.self) { folder in
+                EntryFolder(folder: folder).transition(.slide)
+                    .swipeActions( edge: .trailing) {
+                        Button(role: .destructive) {
+                            if (folder.folders.isEmpty && folder.notes.isEmpty) {
+                                    selectedSubFolder = folder
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                        withAnimation {
+                                            deleteFolder()
+                                        }
+                                    }
+                                
+                            } else {
+                                selectedSubFolder = folder
+                                isDeleteDialogPresented = true
+                            }
+
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                    Button {
+                        //TODO: Implement move folder
+                    } label: {
+                        Label("Move", systemImage: "folder.fill")
+                    }
+                }.onTapGesture {
                         if (folder.passwordHash != nil && folder.passwordHash!.locked_){
                             unlock.toggle()
                         } else {
@@ -85,7 +111,34 @@ struct MenuView: View {
         }.onAppear() {
             folderModel = Folders.fetchRootFolders(context: context)
             passwordModel = Password.fetchPasswords(context: context)
+        }.confirmationDialog("Delete this folder?", isPresented: $isDeleteDialogPresented) {
+            Button("Delete", role: .destructive) {
+                isDeleteDialogPresented = false
+
+                
+                DispatchQueue.main.async{
+                    withAnimation() {
+                        deleteFolder()
+                    }
+                    selectedSubFolder = nil
+                }
+                
+            }
+            Button("Cancel", role: .cancel) {
+                selectedSubFolder = nil
+            }
+        } message: {
+            Text("The folder and all its contents will be permanently removed.")
         }
+    }
+    
+    func deleteFolder() {
+        guard let folder = selectedSubFolder else { return }
+        context.delete(folder)
+        if let index = folderModel.folders.firstIndex(of: folder) {
+            folderModel.folders.remove(at: index)
+        }
+        try! context.save()
     }
 }
 

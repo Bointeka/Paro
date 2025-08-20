@@ -27,7 +27,9 @@ public class Folders: NSManagedObject {
     
     func deleteNote(_ note: Note) {
         guard let context = note.managedObjectContext else { return }
+        print("deleting note", note)
         context.delete(note)
+        try! context.save()
     }
     
     
@@ -45,6 +47,7 @@ public class Folders: NSManagedObject {
     func deleteFolder(_ folder: Folders) {
         guard let context = folder.managedObjectContext else { return }
         context.delete(folder)
+        try! context.save()
     }
     
     func getNoteCount() -> Int {

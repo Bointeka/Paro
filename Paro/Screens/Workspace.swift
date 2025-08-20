@@ -20,13 +20,15 @@ struct Workspace: View {
     @State var blankModel: FolderModel = FolderModel(folders: [])
     @State var folders: [Folders] = []
     @State var notes: [Note] = []
+    @State var isDeleteDialogPresented: Bool = false
+    @State var selectedSubFolder: Folders? = nil
     
     var body: some View {
         List {
            Section(header: Text("Folders")) {
                 ForEach(folders, id: \.self.index) { folder in
                     EntryFolder(folder: folder).swipeActions (edge: .trailing){
-                        FolderSwipe(selectedFolder: selectedFolder, folder: folder, folders: $folders)
+                       FolderSwipe(selectedFolder: selectedFolder, isDeleteDialogPresented: $isDeleteDialogPresented , folders: $folders, selectedSubFolder: $selectedSubFolder, folder: folder)
                     }.onTapGesture {
                         if (folder.passwordHash != nil && folder.passwordHash!.locked_){
                             unlock.toggle()
@@ -60,7 +62,7 @@ struct Workspace: View {
             Section(header: Text("Notes")) {
                 ForEach(notes, id: \.self.timestamp) { note in
                     EntryNote(note: note,folder: selectedFolder, notes: $notes).swipeActions(edge: .trailing) {
-                        NoteSwipe(folder: selectedFolder, note: note)
+                        NoteSwipe(folder: selectedFolder, note: note, notes: $notes)
                     }
                 }
             }
@@ -94,7 +96,36 @@ struct Workspace: View {
             }.padding(.trailing, 30)
         }.sheet(isPresented: $isVisible) {
             AddFolder(isPresented: $isVisible, folderModel: $blankModel, folder: selectedFolder, passwords: $passwords, folders: $folders)
+        }.confirmationDialog("Delete this folder?", isPresented: $isDeleteDialogPresented) {
+            Button("Delete", role: .destructive) {
+                isDeleteDialogPresented = false
+                
+                DispatchQueue.main.async{
+                    withAnimation() {
+                        deleteFolder()
+                    }
+                    selectedSubFolder = nil
+                }
+                
+                try! context.save()
+            }
+            Button("Cancel", role: .cancel) {
+                selectedSubFolder = nil
+            }
+        } message: {
+            Text("The folder and all its contents will be permanently removed.")
         }
+    }
+    
+    func deleteFolder() {
+        guard let folder = selectedSubFolder else { return }
+        selectedFolder.deleteFolder(folder)
+        withAnimation {
+            if let index = folders.firstIndex(of: folder) {
+                folders.remove(at: index)
+            }
+        }
+        
     }
 }
 

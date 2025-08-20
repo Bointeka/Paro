@@ -9,15 +9,21 @@ import SwiftUI
 
 struct FolderSwipe: View {
     @ObservedObject var selectedFolder: Folders
-    @State var folder: Folders
+    
+    @Binding var isDeleteDialogPresented: Bool
     @Binding var folders: [Folders]
+    @Binding var selectedSubFolder: Folders?
+    
+    @State var folder: Folders
+    
+    
     var body: some View {
         Button(role: .destructive) {
-            if (selectedFolder.folders.isEmpty && selectedFolder.notes.isEmpty) {
-                selectedFolder.deleteFolder(folder)
-                if let index = folders.firstIndex(of: folder) {
-                    folders.remove(at: index)
-                }
+            if (folder.folders.isEmpty && folder.notes.isEmpty) {
+                deleteFolder()
+            } else {
+                isDeleteDialogPresented = true
+                selectedSubFolder = folder
             }
         } label: {
             Label("Delete", systemImage: "trash")
@@ -28,8 +34,15 @@ struct FolderSwipe: View {
             Label("Move", systemImage: "folder.fill")
         }
     }
+    
+    func deleteFolder() {
+        selectedFolder.deleteFolder(folder)
+        if let index = folders.firstIndex(of: folder) {
+            folders.remove(at: index)
+        }
+    }
 }
 
 #Preview {
-    FolderSwipe(selectedFolder: Folders.folderPreviewHelper, folder: Folders.folderPreviewHelper, folders: .constant([]))
+    FolderSwipe(selectedFolder: Folders.folderPreviewHelper, isDeleteDialogPresented: .constant(true), folders: .constant([]), selectedSubFolder: .constant(Folders.folderPreviewHelper), folder: Folders.folderPreviewHelper, )
 }
