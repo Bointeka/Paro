@@ -32,6 +32,6 @@ extension Password {
     // MARK: preview helpers
     static var passwordSelectionHelper: Password {
         let context = PersistenceController.preview.container.viewContext
-        return try! Password(name: "Test", password: "Test", hint: "Test", context: context)
+        return try! Password(name: "Test", salt: String.randomString(length: 10), password: "Test", hint: "Test", context: context)
     }
 }

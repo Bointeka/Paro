@@ -20,7 +20,8 @@ import CoreData
         if let _ = passwords.firstIndex(where: {name == $0.name}) {
             throw DataValidationError.duplicatePassword
         } else {
-            self.passwords.append(try Password(name: name, password: password, hint: hint, context: context))
+            let salt = String.randomString(length: 10)
+            self.passwords.append(try Password(name: name, salt: salt, password: password, hint: hint, context: context))
             try context.save()
         }
     }

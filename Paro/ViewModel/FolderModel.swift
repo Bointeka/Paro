@@ -34,7 +34,9 @@ import CoreData
     
     func deleteFolder(_ folder: Folders) {
         guard let managedContext = folder.managedObjectContext else { return }
-        
+        if let index = folders.firstIndex(of: folder) {
+            folders.remove(at: index)
+        }
         managedContext.delete(folder)
     }
 }

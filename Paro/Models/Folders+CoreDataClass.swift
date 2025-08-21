@@ -27,7 +27,6 @@ public class Folders: NSManagedObject {
     
     func deleteNote(_ note: Note) {
         guard let context = note.managedObjectContext else { return }
-        print("deleting note", note)
         context.delete(note)
         try! context.save()
     }

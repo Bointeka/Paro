@@ -18,17 +18,15 @@ struct Workspace: View {
     @State var unlock: Bool = false
     @State var password: String = ""
     @State var blankModel: FolderModel = FolderModel(folders: [])
-    @State var folders: [Folders] = []
-    @State var notes: [Note] = []
     @State var isDeleteDialogPresented: Bool = false
     @State var selectedSubFolder: Folders? = nil
     
     var body: some View {
         List {
            Section(header: Text("Folders")) {
-                ForEach(folders, id: \.self.index) { folder in
+               ForEach(Array(selectedFolder.folders).sorted(by: { $0.index < $1.index}), id: \.self.index) { folder in
                     EntryFolder(folder: folder).swipeActions (edge: .trailing){
-                       FolderSwipe(selectedFolder: selectedFolder, isDeleteDialogPresented: $isDeleteDialogPresented , folders: $folders, selectedSubFolder: $selectedSubFolder, folder: folder)
+                       FolderSwipe(selectedFolder: selectedFolder, isDeleteDialogPresented: $isDeleteDialogPresented, selectedSubFolder: $selectedSubFolder, folder: folder)
                     }.onTapGesture {
                         if (folder.passwordHash != nil && folder.passwordHash!.locked_){
                             unlock.toggle()
@@ -40,13 +38,17 @@ struct Workspace: View {
                         SecureField("Password", text: $password).textInputAutocapitalization(.never)
                         HStack {
                             Button {
+                                
+                                let salt = folder.passwordHash!.salt
                                 if (folder.passwordHash != nil && folder.passwordHash!.unlock(password)) {
-                                    unlock.toggle()
-                                    password = ""
                                     passwords.locked = false
+                                    unlock.toggle()
                                     path.append(folder)
+                                } else {
+                                    //TODO: Add error when password is incorrect. Use .overlay instead of alert
                                     
                                 }
+                                password = ""
                             } label : {
                                 Text("Unlock")
                             }
@@ -60,9 +62,9 @@ struct Workspace: View {
                 }
             }
             Section(header: Text("Notes")) {
-                ForEach(notes, id: \.self.timestamp) { note in
-                    EntryNote(note: note,folder: selectedFolder, notes: $notes).swipeActions(edge: .trailing) {
-                        NoteSwipe(folder: selectedFolder, note: note, notes: $notes)
+                ForEach(Array(selectedFolder.notes).sorted(by: {$0.timestamp > $1.timestamp}), id: \.self.timestamp) { note in
+                    EntryNote(note: note,folder: selectedFolder).swipeActions(edge: .trailing) {
+                        NoteSwipe(folder: selectedFolder, note: note)
                     }
                 }
             }
@@ -75,10 +77,7 @@ struct Workspace: View {
                         .padding(.trailing, 30)
                 }
             }
-        }).onAppear() {
-            folders = Folders.fetchSubFolders(context: context, folder: selectedFolder)
-            notes = Note.fetchNotes(context: context, folder: selectedFolder)
-        }
+        })
         HStack {
             Button {
                 isVisible.toggle()
@@ -88,14 +87,14 @@ struct Workspace: View {
             }.padding(.leading, 30)
             Spacer()
             if (!passwords.locked && selectedFolder.passwordHash != nil) {
-                LockFolders(passwords: $passwords, path: $path, selectedFolder: selectedFolder)
+                LockFolders(passwords: passwords, path: $path, selectedFolder: selectedFolder)
             }
             Spacer()
-            NavigationLink(destination: NoteEdit(folder: selectedFolder, note: Note(context: context), notes: $notes)) {
+            NavigationLink(destination: NoteEdit(folder: selectedFolder, note: Note(context: context))) {
                 Icon(iconName:"square.and.pencil", width: 40, height: 40)
             }.padding(.trailing, 30)
         }.sheet(isPresented: $isVisible) {
-            AddFolder(isPresented: $isVisible, folderModel: $blankModel, folder: selectedFolder, passwords: $passwords, folders: $folders)
+            AddFolder(isPresented: $isVisible, folderModel: $blankModel, folder: selectedFolder, passwords: $passwords)
         }.confirmationDialog("Delete this folder?", isPresented: $isDeleteDialogPresented) {
             Button("Delete", role: .destructive) {
                 isDeleteDialogPresented = false
@@ -120,11 +119,6 @@ struct Workspace: View {
     func deleteFolder() {
         guard let folder = selectedSubFolder else { return }
         selectedFolder.deleteFolder(folder)
-        withAnimation {
-            if let index = folders.firstIndex(of: folder) {
-                folders.remove(at: index)
-            }
-        }
         
     }
 }

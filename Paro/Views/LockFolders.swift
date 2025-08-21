@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LockFolders: View {
-    @Binding var passwords: PasswordModel
+    @State var passwords: PasswordModel
     @Binding var path: NavigationPath
     @ObservedObject var selectedFolder: Folders
     
@@ -31,5 +31,5 @@ struct LockFolders: View {
 }
 
 #Preview {
-    LockFolders(passwords: .constant(PasswordModel(passwords: [])), path: .constant(NavigationPath()), selectedFolder: Folders.folderPreviewHelper)
+    LockFolders(passwords: PasswordModel(passwords: []), path: .constant(NavigationPath()), selectedFolder: Folders.folderPreviewHelper)
 }

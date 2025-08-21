@@ -22,7 +22,7 @@
         <attribute name="locked_" optional="YES" transient="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="name_" optional="YES" attributeType="String"/>
         <attribute name="salt_" optional="YES" attributeType="String" allowsCloudEncryption="YES"/>
-        <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Folder" inverseName="passwordHash" inverseEntity="Folder"/>
+        <relationship name="folder" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Folder" inverseName="passwordHash" inverseEntity="Folder"/>
     </entity>
     <entity name="Reflection" representedClassName="Reflection" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>

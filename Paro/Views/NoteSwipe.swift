@@ -10,13 +10,10 @@ import SwiftUI
 struct NoteSwipe: View {
     @ObservedObject var folder: Folders
     @ObservedObject var note: Note
-    @Binding var notes: [Note]
+    
     var body: some View {
         Button(role: .destructive) {
             folder.deleteNote(note)
-            if let index = notes.firstIndex(of: note) {
-                notes.remove(at: index)
-            }
         } label: {
             Label("Delete", systemImage: "trash")
         }
@@ -29,5 +26,5 @@ struct NoteSwipe: View {
 }
 
 #Preview {
-    NoteSwipe(folder: Folders.folderPreviewHelper, note: Note.notePreviewHelper, notes: .constant([]))
+    NoteSwipe(folder: Folders.folderPreviewHelper, note: Note.notePreviewHelper)
 }

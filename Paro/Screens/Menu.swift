@@ -63,11 +63,14 @@ struct MenuView: View {
                         SecureField("Password", text: $password)
                         HStack {
                             Button {
+                                let salt = folder.passwordHash!.salt
                                 if (folder.passwordHash != nil && folder.passwordHash!.unlock(password)) {
                                     unlock.toggle()
                                     password = ""
                                     passwordModel.locked = false
                                     path.append(folder)
+                                } else {
+                                    //TODO: SHow hint and error about wrong password. Use .overlay instead of alert
                                 }
                             } label : {
                                 Text("Unlock")
@@ -101,16 +104,16 @@ struct MenuView: View {
                 }.padding(.leading, 30)
                 Spacer()
                 if (!passwordModel.locked) {
-                    LockFolders(passwords: $passwordModel, path: $path, selectedFolder: emptyFolder)
+                    LockFolders(passwords: passwordModel, path: $path, selectedFolder: emptyFolder)
                 }
                 Spacer()
                 Text("Donate").padding(.trailing, 30)
+            }.onAppear {
+                folderModel = Folders.fetchRootFolders(context: context)
+                passwordModel = Password.fetchPasswords(context: context)
             }
         }.sheet(isPresented: $isVisible) {
-            AddFolder(isPresented: $isVisible, folderModel: $folderModel, folder: emptyFolder, passwords: $passwordModel, folders: .constant([]))
-        }.onAppear() {
-            folderModel = Folders.fetchRootFolders(context: context)
-            passwordModel = Password.fetchPasswords(context: context)
+            AddFolder(isPresented: $isVisible, folderModel: $folderModel, folder: emptyFolder, passwords: $passwordModel)
         }.confirmationDialog("Delete this folder?", isPresented: $isDeleteDialogPresented) {
             Button("Delete", role: .destructive) {
                 isDeleteDialogPresented = false
@@ -133,11 +136,7 @@ struct MenuView: View {
     }
     
     func deleteFolder() {
-        guard let folder = selectedSubFolder else { return }
-        context.delete(folder)
-        if let index = folderModel.folders.firstIndex(of: folder) {
-            folderModel.folders.remove(at: index)
-        }
+        folderModel.deleteFolder(selectedSubFolder!)
         try! context.save()
     }
 }

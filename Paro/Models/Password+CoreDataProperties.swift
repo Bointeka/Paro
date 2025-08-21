@@ -39,9 +39,9 @@ extension Password : Identifiable {
         salt_ ?? ""
     }
     
-    convenience init(name: String, password: String, hint: String, context: NSManagedObjectContext) throws {
+    convenience init(name: String, salt: String, password: String, hint: String, context: NSManagedObjectContext) throws {
         self.init(context: context)
-        self.salt_ = String.randomString(length: 10)
+        self.salt_ = salt
         self.name_ = name
         self.hashedPassword_ = try Password.hashPassword(salt, password)
         self.hint_ = hint
@@ -62,7 +62,7 @@ extension Password : Identifiable {
         let context = PersistenceController.preview.container.viewContext
         var passwords: [Password] = []
         for index in 1..<3 {
-            passwords.append(try! Password(name: "\(name)\(index)", password: "Test\(index)", hint: "\(hint)\(index)", context: context))
+            passwords.append(try! Password(name: "\(name)\(index)", salt: String.randomString(length: 10), password: "Test\(index)", hint: "\(hint)\(index)", context: context))
         }
         return passwords
     }

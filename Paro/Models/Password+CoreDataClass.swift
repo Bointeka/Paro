@@ -50,7 +50,9 @@ public class Password: NSManagedObject {
     
     func unlock(_ password: String) -> Bool{
         if (self.locked_ && comparePassword(password)) {
+            willChangeValue(forKey: "locked_")
             self.locked_.toggle()
+            didChangeValue(forKey: "locked_")
             return true
         }
         return false

@@ -23,7 +23,7 @@ struct Search: View {
         NavigationView {
             List {
                 Section("Folders") {
-                    ForEach(folders, id: \.self.name) { folder in
+                    ForEach(folders, id: \.self) { folder in
                         EntryFolder(folder: folder).transition(.opacity)
                             .onTapGesture {
                             if (folder.passwordHash != nil && folder.passwordHash!.locked_){
@@ -58,7 +58,7 @@ struct Search: View {
             }
                 Section("Notes") {
                     ForEach(notes, id: \.self.timestamp) { note in
-                        EntryNote(note: note, folder: note.folder ?? Folders(name: "empty", context: context), notes: .constant([])).transition(.opacity)
+                        EntryNote(note: note, folder: note.folder ?? Folders(name: "empty", context: context)).transition(.opacity)
                     }
                 }
             }.navigationDestination(for: Folders.self) { folder in

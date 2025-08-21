@@ -11,7 +11,6 @@ struct FolderSwipe: View {
     @ObservedObject var selectedFolder: Folders
     
     @Binding var isDeleteDialogPresented: Bool
-    @Binding var folders: [Folders]
     @Binding var selectedSubFolder: Folders?
     
     @State var folder: Folders
@@ -37,12 +36,9 @@ struct FolderSwipe: View {
     
     func deleteFolder() {
         selectedFolder.deleteFolder(folder)
-        if let index = folders.firstIndex(of: folder) {
-            folders.remove(at: index)
-        }
     }
 }
 
 #Preview {
-    FolderSwipe(selectedFolder: Folders.folderPreviewHelper, isDeleteDialogPresented: .constant(true), folders: .constant([]), selectedSubFolder: .constant(Folders.folderPreviewHelper), folder: Folders.folderPreviewHelper, )
+    FolderSwipe(selectedFolder: Folders.folderPreviewHelper, isDeleteDialogPresented: .constant(true), selectedSubFolder: .constant(Folders.folderPreviewHelper), folder: Folders.folderPreviewHelper, )
 }
