@@ -17,11 +17,6 @@ struct NoteSwipe: View {
         } label: {
             Label("Delete", systemImage: "trash")
         }
-        Button {
-            //TODO: Implement lock note (Allow for no edits)
-        } label: {
-            Label("Move", systemImage: "lock.fill")
-        }
     }
 }
 

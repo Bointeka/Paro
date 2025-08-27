@@ -32,69 +32,48 @@ struct MenuView: View {
                     .swipeActions( edge: .trailing) {
                         Button(role: .destructive) {
                             if (folder.folders.isEmpty && folder.notes.isEmpty) {
-                                    selectedSubFolder = folder
+                                selectedSubFolder = folder
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                        withAnimation {
-                                            deleteFolder()
-                                        }
+                                    withAnimation {
+                                        deleteFolder()
                                     }
+                                }
                                 
                             } else {
                                 selectedSubFolder = folder
                                 isDeleteDialogPresented = true
                             }
-
-                    } label: {
-                        Label("Delete", systemImage: "trash")
-                    }
-                    Button {
-                        //TODO: Implement move folder
-                    } label: {
-                        Label("Move", systemImage: "folder.fill")
-                    }
-                }.onTapGesture {
+                            
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                        Button {
+                            //TODO: Implement move folder
+                        } label: {
+                            Label("Move", systemImage: "folder.fill")
+                        }
+                    }.onTapGesture {
                         if (folder.passwordHash != nil && folder.passwordHash!.locked_){
                             unlock.toggle()
+                            selectedSubFolder = folder
                         } else {
                             path.append(folder)
                         }
                         
-                    }.alert("Unlock folder", isPresented: $unlock) {
-                        SecureField("Password", text: $password)
-                        HStack {
-                            Button {
-                                let salt = folder.passwordHash!.salt
-                                if (folder.passwordHash != nil && folder.passwordHash!.unlock(password)) {
-                                    unlock.toggle()
-                                    password = ""
-                                    passwordModel.locked = false
-                                    path.append(folder)
-                                } else {
-                                    //TODO: SHow hint and error about wrong password. Use .overlay instead of alert
-                                }
-                            } label : {
-                                Text("Unlock")
-                            }
-                            Button {
-                                unlock.toggle()
-                            } label : {
-                                Text("Cancel")
-                            }
-                        }
                     }
             }
-                .navigationTitle("Folders")
-                .navigationDestination(for: Folders.self) {
-                    folder in
-                    Workspace(passwords: $passwordModel, path: $path, selectedFolder: folder )
-                }.toolbar(content: {
-                    ToolbarItem (placement: .topBarTrailing){
-                        NavigationLink(destination: Search(passwords: $passwordModel, path: $path)) {
-                            Icon(iconName: "magnifyingglass", width: 25, height: 25)
-                                .padding(.trailing, 30)
-                        }
+            .navigationTitle("Folders")
+            .navigationDestination(for: Folders.self) {
+                folder in
+                Workspace(passwords: $passwordModel, path: $path, selectedFolder: folder )
+            }.toolbar(content: {
+                ToolbarItem (placement: .topBarTrailing){
+                    NavigationLink(destination: Search(passwords: $passwordModel, path: $path)) {
+                        Icon(iconName: "magnifyingglass", width: 25, height: 25)
+                            .padding(.trailing, 30)
                     }
-                })
+                }
+            })
             
             HStack {
                 Button {
@@ -114,25 +93,27 @@ struct MenuView: View {
             }
         }.sheet(isPresented: $isVisible) {
             AddFolder(isPresented: $isVisible, folderModel: $folderModel, folder: emptyFolder, passwords: $passwordModel)
+        }.overlay {
+            if unlock {
+                UnlockFolder(passwords: $passwordModel, selectedFolder: $selectedSubFolder, unlock: $unlock, path: $path)
+                    .transition(.opacity)
+            }
         }.confirmationDialog("Delete this folder?", isPresented: $isDeleteDialogPresented) {
             Button("Delete", role: .destructive) {
                 isDeleteDialogPresented = false
-
-                
                 DispatchQueue.main.async{
                     withAnimation() {
                         deleteFolder()
                     }
                     selectedSubFolder = nil
                 }
-                
             }
             Button("Cancel", role: .cancel) {
                 selectedSubFolder = nil
             }
         } message: {
             Text("The folder and all its contents will be permanently removed.")
-        }
+        }.animation(.easeIn, value: unlock)
     }
     
     func deleteFolder() {
