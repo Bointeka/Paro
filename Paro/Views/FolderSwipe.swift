@@ -27,11 +27,6 @@ struct FolderSwipe: View {
         } label: {
             Label("Delete", systemImage: "trash")
         }
-        Button {
-            //TODO: Implement move folder
-        } label: {
-            Label("Move", systemImage: "folder.fill")
-        }
     }
     
     func deleteFolder() {

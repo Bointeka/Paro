@@ -36,3 +36,16 @@ enum PasswordError: Error, LocalizedError {
         }
     }
 }
+
+enum FileSystemError: Error, LocalizedError {
+    case unableToSave
+    
+    var errorDescription: String? {
+        switch self {
+        case .unableToSave:
+            return "Unable to save. Please try again."
+        }
+    }
+    
+    
+}

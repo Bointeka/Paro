@@ -13,6 +13,8 @@ struct ReflectionView: View {
     @ObservedObject var note: Note
     @Binding var showReflection: Bool
     
+    @State var showError: Bool = false
+    @State var errorMessage: String = ""
     @State var text: String = ""
     
     var body: some View {
@@ -26,11 +28,18 @@ struct ReflectionView: View {
                     }.padding(.horizontal, geo.size.width * 0.05)
                     Spacer()
                     Button {
-                        note.addReflection(text, context: context)
+                        do {
+                            try note.addReflection(text, context: context)
+                        } catch {
+                            errorMessage = error.localizedDescription
+                        }
                         text = ""
                     } label: {
                         Text("Save")
                     }.padding(.horizontal, geo.size.width * 0.05)
+                }.padding(.vertical, 15)
+                    .alert("Unable to save reflection", isPresented: $showError) {
+                    ErrorAlert(showError: $showError, errorMessage: $errorMessage)
                 }
                 
                 TextEditor(text: $text)
@@ -42,7 +51,7 @@ struct ReflectionView: View {
                 Section("Reflections", content: {
                     ScrollView {
                         LazyVStack ( spacing: 30) {
-                            ForEach(Array(note.reflections), id: \.self.id) { reflection in
+                            ForEach(Array(note.reflections).sorted(by: {$0.timestamp > $1.timestamp}), id: \.self.id) { reflection in
                                 if (reflection.isEven()) {
                                     EntryReflection(reflection: reflection, hAlignment: .trailing, alignment: .trailing, ).swipeActions (edge: .trailing){
                                         Button(role: .destructive) {

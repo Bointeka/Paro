@@ -21,7 +21,11 @@ public class Folders: NSManagedObject {
         guard let context = note.managedObjectContext else { return }
         if (note.title != ""){
             addToNotes_(note)
-            try context.save()
+            do {
+                try context.save()
+            } catch {
+                throw FileSystemError.unableToSave
+            }
         }
     }
     

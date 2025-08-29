@@ -17,14 +17,13 @@ public class Note: NSManagedObject {
         return dateFormatter.string(from: timestamp)
     }
     
-    func addReflection(_ text: String, context: NSManagedObjectContext) {
+    func addReflection(_ text: String, context: NSManagedObjectContext) throws {
         if (text != "" ) {
             addToReflections_(Reflection(id: Int64(reflections.count), text: text, context: context))
             do {
                 try context.save()
             } catch {
-                print(error)
-                print(error.localizedDescription)
+                throw FileSystemError.unableToSave
             }
         }
     }
@@ -33,6 +32,7 @@ public class Note: NSManagedObject {
         guard let context = reflection.managedObjectContext else { return }
         
         context.delete(reflection)
+        try! context.save()
     }
     
     static func == (lhs: Note, rhs: Note) -> Bool {

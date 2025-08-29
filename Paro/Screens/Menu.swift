@@ -11,6 +11,7 @@ import CoreData
 struct MenuView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.managedObjectContext) var context
+    @Environment(\.openURL) var openURL
     
     @State var folderModel: FolderModel = FolderModel(folders: [])
     @State var passwordModel: PasswordModel = PasswordModel(passwords: [])
@@ -47,11 +48,6 @@ struct MenuView: View {
                         } label: {
                             Label("Delete", systemImage: "trash")
                         }
-                        Button {
-                            //TODO: Implement move folder
-                        } label: {
-                            Label("Move", systemImage: "folder.fill")
-                        }
                     }.onTapGesture {
                         if (folder.passwordHash != nil && folder.passwordHash!.locked_){
                             unlock.toggle()
@@ -86,7 +82,14 @@ struct MenuView: View {
                     LockFolders(passwords: passwordModel, path: $path, selectedFolder: emptyFolder)
                 }
                 Spacer()
-                Text("Donate").padding(.trailing, 30)
+                Button {
+                    //TODO: Create donation account
+                    if let url = URL(string: "https://www.apple.com") {
+                                    openURL(url)
+                                }
+                } label: {
+                    Icon(iconName: "heart.circle.fill", width: 50, height: 50)
+                }
             }.onAppear {
                 folderModel = Folders.fetchRootFolders(context: context)
                 passwordModel = Password.fetchPasswords(context: context)

@@ -19,6 +19,8 @@ struct NoteEdit: View {
     @FocusState var focused: Field?
     
     @State var showReflections: Bool = false
+    @State var showError: Bool = false
+    @State var errorMessage: String = ""
     
     @ObservedObject var note: Note
     
@@ -41,7 +43,6 @@ struct NoteEdit: View {
                         }
                     
                 }.cornerRadius(10)
-                   // .background(.grassGreen)
                 TextEditor(text: $note.text)
                     .frame(minHeight: UIScreen.main.bounds.height * 0.75,
                            maxHeight: UIScreen.main.bounds.height * 0.75)
@@ -65,7 +66,7 @@ struct NoteEdit: View {
                  try folder.addNote(note)
                  dismiss()
              } catch {
-                 //TODO: Add error when saving fails.
+                 errorMessage = error.localizedDescription
              }
             } label: {
                 Icon(iconName:"chevron.backward", width: 20, height: 20)
@@ -77,10 +78,9 @@ struct NoteEdit: View {
                     focused = .text
                 }
                 
-         }
-        
-        
-        
+            }.alert("Unable to save note", isPresented: $showError) {
+                ErrorAlert(showError: $showError, errorMessage: $errorMessage)
+            }
     }
 }
 

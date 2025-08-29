@@ -23,12 +23,7 @@ import CoreData
             self.folders.append(folder)
             folder.folder = nil
             folder.index = Int64(folders.count)
-            do {
-                try context.save()
-            } catch {
-                print(error)
-                //TODO: Add valid error for addition
-            }
+           try context.save()
         }
     }
     
@@ -38,6 +33,7 @@ import CoreData
             folders.remove(at: index)
         }
         managedContext.delete(folder)
+        try! managedContext.save()
     }
 }
 
